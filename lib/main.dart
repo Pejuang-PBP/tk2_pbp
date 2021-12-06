@@ -77,6 +77,15 @@ class _MyHomePageState extends State<MyHomePage> {
     List<BottomNavigationBarItem> menuItems = const [
       BottomNavigationBarItem(
         icon: Padding(
+            child: Icon(Icons.home_outlined),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        activeIcon: Padding(
+            child: Icon(Icons.home),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        label: 'Home',
+      ),
+      BottomNavigationBarItem(
+        icon: Padding(
             child: Icon(Icons.dashboard_outlined),
             padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
         activeIcon: Padding(
