@@ -49,16 +49,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _pageIndex = 0;
+
   List<Widget> _pages = [];
   PageController _pageController = PageController(initialPage: 0);
 
   @override
   void initState() {
     super.initState();
-
+    // Page index for determining menu active state.
     _pageIndex = 0;
+
+    // Page components
     _pages = <Widget>[];
 
+    // Page controller
     _pageController = PageController(initialPage: _pageIndex);
   }
 
