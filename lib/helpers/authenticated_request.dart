@@ -7,14 +7,14 @@ class CookieRequest {
   Future<Map> get(String url) async {
     http.Response response = await http.get(Uri.parse(url), headers: headers);
     updateCookie(response);
-    return json.decode(response.body);
+    return json.decode(response.body); // Expects and returns JSON request body
   }
 
   Future<Map> post(String url, dynamic data) async {
     http.Response response =
         await http.post(Uri.parse(url), body: data, headers: headers);
     updateCookie(response);
-    return json.decode(response.body);
+    return json.decode(response.body); // Expects and returns JSON request body
   }
 
   void updateCookie(http.Response response) {
