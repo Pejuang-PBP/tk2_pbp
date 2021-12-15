@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           home: const MyHomePage(title: 'KonvaSearch'),
-          routes: {"/login": (BuildContext context) => LoginPage()},
+          routes: {"/login": (BuildContext context) => const LoginPage()},
         ));
   }
 }
