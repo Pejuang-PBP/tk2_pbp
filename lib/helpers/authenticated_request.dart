@@ -1,14 +1,14 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:http/browser_client.dart';
+import 'package:universal_html/html.dart' as html;
 
 class CookieRequest {
   Map<String, String> headers = {};
   final http.Client _client = http.Client();
 
   Future<Map> get(String url) async {
-    if (_client is BrowserClient) {
-      (_client as BrowserClient).withCredentials = true;
+    if (_client is html.HttpRequest) {
+      (_client as html.HttpRequest).withCredentials = true;
     }
     http.Response response =
         await _client.get(Uri.parse(url), headers: headers);
@@ -17,8 +17,8 @@ class CookieRequest {
   }
 
   Future<Map> post(String url, dynamic data) async {
-    if (_client is BrowserClient) {
-      (_client as BrowserClient).withCredentials = true;
+    if (_client is html.HttpRequest) {
+      (_client as html.HttpRequest).withCredentials = true;
     }
     http.Response response =
         await _client.post(Uri.parse(url), body: data, headers: headers);
