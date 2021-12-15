@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:tk2_pbp/screens/login.dart';
 
