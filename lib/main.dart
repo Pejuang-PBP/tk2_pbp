@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tk2_pbp/helpers/authenticated_request.dart';
+import 'package:flutter/foundation.dart';
+
+import 'package:tk2_pbp/screens/login.dart';
+
+import 'package:tk2_pbp/pages/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,23 +17,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'KonvaSearch',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'KonvaSearch'),
-    );
+    return Provider(
+        create: (_) => CookieRequest(),
+        child: MaterialApp(
+          title: 'KonvaSearch',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            // This is the theme of your application.
+            //
+            // Try running your application with "flutter run". You'll see the
+            // application has a blue toolbar. Then, without quitting the app, try
+            // changing the primarySwatch below to Colors.green and then invoke
+            // "hot reload" (press "r" in the console where you ran "flutter run",
+            // or simply save your changes to "hot reload" in a Flutter IDE).
+            // Notice that the counter didn't reset back to zero; the application
+            // is not restarted.
+            primarySwatch: Colors.blue,
+          ),
+          home: const MyHomePage(title: 'KonvaSearch'),
+          routes: {"/login": (BuildContext context) => LoginPage()},
+        ));
   }
 }
 
@@ -60,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _pageIndex = 0;
 
     // Page components
-    _pages = <Widget>[];
+    _pages = <Widget>[const Home()];
 
     // Page controller
     _pageController = PageController(initialPage: _pageIndex);
@@ -74,6 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    debugPrint(request.toString());
     List<BottomNavigationBarItem> menuItems = const [
       BottomNavigationBarItem(
         icon: Padding(
