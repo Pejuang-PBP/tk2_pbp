@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tk2_pbp/helpers/authenticated_request.dart';
 
-import 'package:tk2_pbp/screens/login.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:tk2_pbp/pages/home.dart';
+import 'package:tk2_pbp/screens/home_screen.dart';
+import 'package:tk2_pbp/screens/account_screen.dart';
+import 'package:tk2_pbp/screens/account_authed_screen.dart';
+import 'package:tk2_pbp/screens/login_screen.dart';
+import 'package:tk2_pbp/screens/register_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,26 +18,29 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Provider(
-        create: (_) => CookieRequest(),
-        child: MaterialApp(
-          title: 'KonvaSearch',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            // This is the theme of your application.
-            //
-            // Try running your application with "flutter run". You'll see the
-            // application has a blue toolbar. Then, without quitting the app, try
-            // changing the primarySwatch below to Colors.green and then invoke
-            // "hot reload" (press "r" in the console where you ran "flutter run",
-            // or simply save your changes to "hot reload" in a Flutter IDE).
-            // Notice that the counter didn't reset back to zero; the application
-            // is not restarted.
-            primarySwatch: Colors.blue,
-          ),
-          home: const MyHomePage(title: 'KonvaSearch'),
-          routes: {"/login": (BuildContext context) => const LoginPage()},
-        ));
+    return MaterialApp(
+      title: 'KonvaSearch',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
+        primarySwatch: Colors.blue,
+      ),
+      // home: const MyHomePage(title: 'KonvaSearch'),
+      initialRoute: '/',
+      routes: {
+        '/': (ctx) => const MyHomePage(title: 'KonvaSearch'),
+        LoginScreen.routeName: (ctx) => const LoginScreen(),
+        RegisterScreen.routeName: (ctx) => const RegisterScreen(),
+      }
+    );
   }
 }
 
@@ -57,6 +62,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final storage = const FlutterSecureStorage();
   int _pageIndex = 0;
 
   List<Widget> _pages = [];
@@ -69,10 +75,21 @@ class _MyHomePageState extends State<MyHomePage> {
     _pageIndex = 0;
 
     // Page components
-    _pages = <Widget>[const Home()];
+    _pages = <Widget>[
+      const HomeScreen(), 
+      const Center(), const Center(), const Center(),
+      const AccountScreen(),
+    ];
 
     // Page controller
     _pageController = PageController(initialPage: _pageIndex);
+  }
+
+  Future<void> checkAuth() async {
+    var _storage = const FlutterSecureStorage();
+    if (await _storage.read(key: 'token') != null) {
+      _pages[4] = const AccountAuthedScreen();
+    }
   }
 
   void _setPage(int x) {
@@ -83,8 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
-    debugPrint(request.toString());
+    checkAuth();
+
     List<BottomNavigationBarItem> menuItems = const [
       BottomNavigationBarItem(
         icon: Padding(
