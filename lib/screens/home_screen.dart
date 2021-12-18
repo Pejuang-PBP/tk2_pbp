@@ -73,6 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
         for (var e in jsonList) {
           carouselData.add(Map<String, String>.from(e));
         }
+        if (carouselData.isEmpty) {
+          carouselData.add({"header": "No data", "desc": "No data"});
+        }
       });
     } else {
       throw Exception("Failed to fetch data");
