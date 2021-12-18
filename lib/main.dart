@@ -167,6 +167,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: PageView(
         controller: _pageController,
         children: _pages,
+        onPageChanged: (page) {
+          setState(() {
+            _pageIndex = page;
+          });
+        },
       ), // This trailing comma makes auto-formatting nicer for build methods.
       bottomNavigationBar: SizedBox(
           child: BottomNavigationBar(
