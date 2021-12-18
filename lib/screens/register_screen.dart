@@ -67,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           padding: const EdgeInsets.all(30),
           child: Column(
             children: <Widget>[
-              const SizedBox( height: 30, ),
+              const SizedBox( height: 60, ),
               const Image(
                 image: AssetImage('assets/images/logo.png'),
                 width: 100,
