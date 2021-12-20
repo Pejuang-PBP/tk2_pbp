@@ -1,14 +1,33 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:universal_html/html.dart' as html;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class CookieRequest {
   Map<String, String> headers = {};
   final http.Client _client = http.Client();
+  bool loggedIn = false;
+
+  Future<Map> login(String url, dynamic data) async {
+    if (kIsWeb) {
+      dynamic c = _client;
+      c.withCredentials = true;
+    }
+
+    http.Response response =
+        await _client.post(Uri.parse(url), body: data, headers: headers);
+
+    updateCookie(response);
+
+    if (response.statusCode == 200) {
+      loggedIn = true;
+    }
+    return json.decode(response.body); // Expects and returns JSON request body
+  }
 
   Future<Map> get(String url) async {
-    if (_client is html.HttpRequest) {
-      (_client as html.HttpRequest).withCredentials = true;
+    if (kIsWeb) {
+      dynamic c = _client;
+      c.withCredentials = true;
     }
     http.Response response =
         await _client.get(Uri.parse(url), headers: headers);
@@ -17,8 +36,9 @@ class CookieRequest {
   }
 
   Future<Map> post(String url, dynamic data) async {
-    if (_client is html.HttpRequest) {
-      (_client as html.HttpRequest).withCredentials = true;
+    if (kIsWeb) {
+      dynamic c = _client;
+      c.withCredentials = true;
     }
     http.Response response =
         await _client.post(Uri.parse(url), body: data, headers: headers);

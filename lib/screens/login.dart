@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () async {
                           if (_loginFormKey.currentState!.validate()) {
                             final response = await request
-                                .post("http://localhost:8000/auth/login", {
+                                .login("http://localhost:8000/auth/login", {
                               'username': username,
                               'password': password1,
                             });
