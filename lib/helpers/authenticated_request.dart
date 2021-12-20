@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 
 class CookieRequest {
   Map<String, String> headers = {};
@@ -22,6 +22,8 @@ class CookieRequest {
     if (response.statusCode == 200) {
       loggedIn = true;
     }
+
+    debugPrint(headers.toString());
     return json.decode(response.body); // Expects and returns JSON request body
   }
 
@@ -33,6 +35,7 @@ class CookieRequest {
     http.Response response =
         await _client.get(Uri.parse(url), headers: headers);
     _updateCookie(response);
+    debugPrint(headers.toString());
     return json.decode(response.body); // Expects and returns JSON request body
   }
 
@@ -44,6 +47,7 @@ class CookieRequest {
     http.Response response =
         await _client.post(Uri.parse(url), body: data, headers: headers);
     _updateCookie(response);
+    debugPrint(headers.toString());
     return json.decode(response.body); // Expects and returns JSON request body
   }
 
