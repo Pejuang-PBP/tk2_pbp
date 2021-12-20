@@ -1,37 +1,98 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:universal_html/html.dart' as html;
+import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 
 class CookieRequest {
   Map<String, String> headers = {};
+  Map<String, String> cookies = {};
   final http.Client _client = http.Client();
+  bool loggedIn = false;
+
+  Future<Map> login(String url, dynamic data) async {
+    if (kIsWeb) {
+      dynamic c = _client;
+      c.withCredentials = true;
+    }
+
+    http.Response response =
+        await _client.post(Uri.parse(url), body: data, headers: headers);
+
+    _updateCookie(response);
+
+    if (response.statusCode == 200) {
+      loggedIn = true;
+    }
+
+    debugPrint(headers.toString());
+    return json.decode(response.body); // Expects and returns JSON request body
+  }
 
   Future<Map> get(String url) async {
-    if (_client is html.HttpRequest) {
-      (_client as html.HttpRequest).withCredentials = true;
+    if (kIsWeb) {
+      dynamic c = _client;
+      c.withCredentials = true;
     }
     http.Response response =
         await _client.get(Uri.parse(url), headers: headers);
-    updateCookie(response);
+    _updateCookie(response);
+    debugPrint(headers.toString());
     return json.decode(response.body); // Expects and returns JSON request body
   }
 
   Future<Map> post(String url, dynamic data) async {
-    if (_client is html.HttpRequest) {
-      (_client as html.HttpRequest).withCredentials = true;
+    if (kIsWeb) {
+      dynamic c = _client;
+      c.withCredentials = true;
     }
     http.Response response =
         await _client.post(Uri.parse(url), body: data, headers: headers);
-    updateCookie(response);
+    _updateCookie(response);
+    debugPrint(headers.toString());
     return json.decode(response.body); // Expects and returns JSON request body
   }
 
-  void updateCookie(http.Response response) {
-    String? rawCookie = response.headers['set-cookie'];
-    if (rawCookie != null) {
-      int index = rawCookie.indexOf(';');
-      headers['cookie'] =
-          (index == -1) ? rawCookie : rawCookie.substring(0, index);
+  void _updateCookie(http.Response response) {
+    String? allSetCookie = response.headers['set-cookie'];
+
+    if (allSetCookie != null) {
+      var setCookies = allSetCookie.split(',');
+
+      for (var setCookie in setCookies) {
+        var cookies = setCookie.split(';');
+
+        for (var cookie in cookies) {
+          _setCookie(cookie);
+        }
+      }
+
+      headers['cookie'] = _generateCookieHeader();
     }
+  }
+
+  void _setCookie(String rawCookie) {
+    if (rawCookie.isNotEmpty) {
+      var keyValue = rawCookie.split('=');
+      if (keyValue.length == 2) {
+        var key = keyValue[0].trim();
+        var value = keyValue[1];
+
+        // ignore keys that aren't cookies
+        if (key == 'path' || key == 'expires') return;
+
+        cookies[key] = value;
+      }
+    }
+  }
+
+  String _generateCookieHeader() {
+    String cookie = "";
+
+    for (var key in cookies.keys) {
+      if (cookie.isNotEmpty) cookie += ";";
+      String? newCookie = cookies[key];
+      cookie += '$key=$newCookie';
+    }
+
+    return cookie;
   }
 }
