@@ -17,7 +17,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider(
-        create: (_) => CookieRequest(),
+        create: (_) {
+          CookieRequest request = CookieRequest();
+
+          return request;
+        },
         child: MaterialApp(
           title: 'KonvaSearch',
           debugShowCheckedModeBanner: false,
@@ -84,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    debugPrint(request.toString());
+    request.init(context);
     List<BottomNavigationBarItem> menuItems = const [
       BottomNavigationBarItem(
         icon: Padding(

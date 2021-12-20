@@ -146,6 +146,20 @@ class _LoginPageState extends State<LoginPage> {
                               'username': username,
                               'password': password1,
                             });
+                            if (request.loggedIn) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(
+                                    "Successfully logged in, Welcome $username!"),
+                              ));
+                              Navigator.pop(context);
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(
+                                    "Failed to login, please check your username/password."),
+                              ));
+                            }
 // print(username);
 // print(password1);
                           } else {}
