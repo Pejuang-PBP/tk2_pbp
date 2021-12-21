@@ -6,6 +6,8 @@ import 'package:tk2_pbp/screens/login.dart';
 
 import 'package:tk2_pbp/pages/home.dart';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 void main() {
   runApp(const MyApp());
 }
@@ -88,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    request.init(context);
+    if (!kIsWeb) request.init(context);
     List<BottomNavigationBarItem> menuItems = const [
       BottomNavigationBarItem(
         icon: Padding(

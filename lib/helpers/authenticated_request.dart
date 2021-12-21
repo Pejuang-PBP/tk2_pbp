@@ -37,7 +37,7 @@ class CookieRequest {
     local.setString("cookies", cookies);
   }
 
-  Future<Map> login(String url, dynamic data) async {
+  Future<dynamic> login(String url, dynamic data) async {
     if (kIsWeb) {
       dynamic c = _client;
       c.withCredentials = true;
@@ -57,7 +57,7 @@ class CookieRequest {
     return json.decode(response.body); // Expects and returns JSON request body
   }
 
-  Future<Map> get(String url) async {
+  Future<dynamic> get(String url) async {
     if (kIsWeb) {
       dynamic c = _client;
       c.withCredentials = true;
@@ -69,7 +69,7 @@ class CookieRequest {
     return json.decode(response.body); // Expects and returns JSON request body
   }
 
-  Future<Map> post(String url, dynamic data) async {
+  Future<dynamic> post(String url, dynamic data) async {
     if (kIsWeb) {
       dynamic c = _client;
       c.withCredentials = true;
