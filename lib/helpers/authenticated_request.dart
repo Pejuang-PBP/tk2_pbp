@@ -1,12 +1,41 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 
 class CookieRequest {
   Map<String, String> headers = {};
   Map<String, String> cookies = {};
   final http.Client _client = http.Client();
+
+  late SharedPreferences local;
+
   bool loggedIn = false;
+  bool initialized = false;
+
+  Future init(BuildContext context) async {
+    if (!initialized) {
+      local = await SharedPreferences.getInstance();
+      String? savedCookies = local.getString("cookies");
+      if (savedCookies != null) {
+        cookies = Map<String, String>.from(json.decode(savedCookies));
+        if (cookies['sessionid'] != null) {
+          loggedIn = true;
+          headers['cookie'] = _generateCookieHeader();
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Successfully logged in. Welcome back!"),
+          ));
+          debugPrint(headers['cookie']);
+        }
+      }
+    }
+    initialized = true;
+  }
+
+  Future persist(String cookies) async {
+    local.setString("cookies", cookies);
+  }
 
   Future<Map> login(String url, dynamic data) async {
     if (kIsWeb) {
@@ -21,9 +50,10 @@ class CookieRequest {
 
     if (response.statusCode == 200) {
       loggedIn = true;
+    } else {
+      loggedIn = false;
     }
 
-    debugPrint(headers.toString());
     return json.decode(response.body); // Expects and returns JSON request body
   }
 
@@ -66,6 +96,8 @@ class CookieRequest {
       }
 
       headers['cookie'] = _generateCookieHeader();
+      String cookieObject = (const JsonEncoder()).convert(cookies);
+      persist(cookieObject);
     }
   }
 
