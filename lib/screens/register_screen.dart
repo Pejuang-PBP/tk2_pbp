@@ -2,35 +2,36 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-
 import 'package:email_validator/email_validator.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
+import 'package:tk2_pbp/helpers/authenticated_request.dart';
 
 void _showErrors(context, errors) {
   showDialog(
-    context: context,
-    builder: (context) {
-      return SimpleDialog(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (var errorList in errors.values) 
-                for (var error in errorList) 
-                Column(children: [
-                  Text(error.toString()), const SizedBox(height: 5,)
-                ]),
-              ],
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (var errorList in errors.values)
+                    for (var error in errorList)
+                      Column(children: [
+                        Text(error.toString()),
+                        const SizedBox(
+                          height: 5,
+                        )
+                      ]),
+                ],
+              ),
             ),
-          ),
-        ],
-      );
-    }
-  );
+          ],
+        );
+      });
 }
 
 class RegisterScreen extends StatefulWidget {
@@ -44,7 +45,6 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _registerFormKey = GlobalKey<FormState>();
-  final storage = const FlutterSecureStorage();
 
   bool isPasswordVisible = false;
   void togglePasswordView() {
@@ -60,245 +60,243 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(210, 224, 239, 1),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(30),
-          child: Column(
-            children: <Widget>[
-              const SizedBox( height: 60, ),
-              const Image(
-                image: AssetImage('assets/images/logo.png'),
-                width: 100,
-                height: 100,
-              ),
-              const SizedBox( height: 30, ),
-      
-              // Form
-              Form(
-                key: _registerFormKey,
-                child: Column(
-                  children: [
-                    // Email ===================================================
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(250, 250, 250, 0.95),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: TextFormField(
-                        onChanged: (String value) {
-                          email = value;
-                        },
-                        decoration: const InputDecoration(
-                          hintText: 'Email',
-                          hintStyle: TextStyle(
-                            color: Color.fromRGBO(200, 200, 200, 1),
+        backgroundColor: const Color.fromRGBO(210, 224, 239, 1),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              children: <Widget>[
+                const SizedBox(
+                  height: 60,
+                ),
+                const Image(
+                  image: AssetImage('assets/images/logo.png'),
+                  width: 100,
+                  height: 100,
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+
+                // Form
+                Form(
+                  key: _registerFormKey,
+                  child: Column(
+                    children: [
+                      // Email
+                      Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(250, 250, 250, 0.95),
+                            borderRadius: BorderRadius.circular(5),
                           ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none, 
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Email tidak boleh kosong";
-                          } else if (!EmailValidator.validate(value)) {
-                            return "Email tidak valid";
-                          }
-                          return null;
-                        },
-                      )
-                    ),
-                    const SizedBox( height: 20, ),
-                    // Username ================================================
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(250, 250, 250, 0.95),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: TextFormField(
-                        onChanged: (String value) {
-                          username = value;
-                        },
-                        decoration: const InputDecoration(
-                          hintText: 'Username',
-                          hintStyle: TextStyle(
-                            color: Color.fromRGBO(200, 200, 200, 1),
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none, 
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Username tidak boleh kosong";
-                          }
-                          return null;
-                        },
-                      )
-                    ),
-                    const SizedBox( height: 20, ),
-                    // Password ================================================
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(250, 250, 250, 0.95),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: TextFormField(
-                        onChanged: (String value) {
-                          password1 = value;
-                        },
-                        obscureText: !isPasswordVisible,
-                        decoration: InputDecoration(
-                          hintText: 'Password',
-                          hintStyle: const TextStyle(
-                            color: Color.fromRGBO(200, 200, 200, 1),
-                          ),
-                          suffixIcon: IconButton(
-                            color: const Color.fromRGBO(200, 200, 200, 1),
-                            splashRadius: 1,
-                            icon: Icon(isPasswordVisible ? 
-                              Icons.visibility_outlined : 
-                              Icons.visibility_off_outlined
+                          child: TextFormField(
+                            onChanged: (String value) {
+                              email = value;
+                            },
+                            decoration: const InputDecoration(
+                              hintText: 'Email',
+                              hintStyle: TextStyle(
+                                color: Color.fromRGBO(200, 200, 200, 1),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
                             ),
-                            onPressed: togglePasswordView,
-                          ),
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide.none, 
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Password tidak boleh kosong";
-                          }
-                          return null;
-                        },
-                      )
-                    ),
-                    const SizedBox( height: 20, ),
-                    // Confirm Password ========================================
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(250, 250, 250, 0.95),
-                        borderRadius: BorderRadius.circular(5),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Email tidak boleh kosong";
+                              } else if (!EmailValidator.validate(value)) {
+                                return "Email tidak valid";
+                              }
+                              return null;
+                            },
+                          )),
+                      const SizedBox(
+                        height: 20,
                       ),
-                      child: TextFormField(
-                        onChanged: (String value) {
-                          password2 = value;
-                        },
-                        obscureText: !isPasswordVisible,
-                        decoration: InputDecoration(
-                          hintText: 'Confirm Password',
-                          hintStyle: const TextStyle(
-                            color: Color.fromRGBO(200, 200, 200, 1),
+                      // Username
+                      Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(250, 250, 250, 0.95),
+                            borderRadius: BorderRadius.circular(5),
                           ),
-                          suffixIcon: IconButton(
-                            color: const Color.fromRGBO(200, 200, 200, 1),
-                            splashRadius: 1,
-                            icon: Icon(isPasswordVisible ? 
-                              Icons.visibility_outlined : 
-                              Icons.visibility_off_outlined
+                          child: TextFormField(
+                            onChanged: (String value) {
+                              username = value;
+                            },
+                            decoration: const InputDecoration(
+                              hintText: 'Username',
+                              hintStyle: TextStyle(
+                                color: Color.fromRGBO(200, 200, 200, 1),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
                             ),
-                            onPressed: togglePasswordView,
-                          ),
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide.none, 
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Password tidak boleh kosong";
-                          } else if (value != password1) {
-                            return "Password tidak sama";
-                          }
-                          return null;
-                        },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Username tidak boleh kosong";
+                              }
+                              return null;
+                            },
+                          )),
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                    const SizedBox(height: 30,),
-                    // Register Button =========================================
-                    // ignore: sized_box_for_whitespace
-                    Container(
-                      width: double.infinity,
-                      child: TextButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromRGBO(255, 0, 0, 1)
+                      // Password
+                      Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(250, 250, 250, 0.95),
+                            borderRadius: BorderRadius.circular(5),
                           ),
-                          foregroundColor: MaterialStateProperty.all<Color>(
-                            Colors.white
+                          child: TextFormField(
+                            onChanged: (String value) {
+                              password1 = value;
+                            },
+                            obscureText: !isPasswordVisible,
+                            decoration: InputDecoration(
+                              hintText: 'Password',
+                              hintStyle: const TextStyle(
+                                color: Color.fromRGBO(200, 200, 200, 1),
+                              ),
+                              suffixIcon: IconButton(
+                                color: const Color.fromRGBO(200, 200, 200, 1),
+                                splashRadius: 1,
+                                icon: Icon(isPasswordVisible
+                                    ? Icons.visibility_outlined
+                                    : Icons.visibility_off_outlined),
+                                onPressed: togglePasswordView,
+                              ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Password tidak boleh kosong";
+                              }
+                              return null;
+                            },
+                          )),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // Confirm Password
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(250, 250, 250, 0.95),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: TextFormField(
+                          onChanged: (String value) {
+                            password2 = value;
+                          },
+                          obscureText: !isPasswordVisible,
+                          decoration: InputDecoration(
+                            hintText: 'Confirm Password',
+                            hintStyle: const TextStyle(
+                              color: Color.fromRGBO(200, 200, 200, 1),
+                            ),
+                            suffixIcon: IconButton(
+                              color: const Color.fromRGBO(200, 200, 200, 1),
+                              splashRadius: 1,
+                              icon: Icon(isPasswordVisible
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined),
+                              onPressed: togglePasswordView,
+                            ),
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
                           ),
-                          overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                            (Set<MaterialState> states) {
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Password tidak boleh kosong";
+                            } else if (value != password1) {
+                              return "Password tidak sama";
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      // Register Button
+                      // ignore: sized_box_for_whitespace
+                      Container(
+                        width: double.infinity,
+                        child: TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color.fromRGBO(255, 0, 0, 1)),
+                            foregroundColor:
+                                MaterialStateProperty.all<Color>(Colors.white),
+                            overlayColor:
+                                MaterialStateProperty.resolveWith<Color?>(
+                                    (Set<MaterialState> states) {
                               if (states.contains(MaterialState.pressed)) {
                                 return const Color.fromRGBO(204, 23, 40, 1);
                               }
                               return null;
-                            }
+                            }),
                           ),
-                        ),
-                        onPressed: () async {
-                          if (_registerFormKey.currentState!.validate()) {
-                            final response = await http.post(
-                              Uri.parse("http://10.0.2.2:8000/flutter-signup"),
-                              // Uri.parse("http://localhost:8000/flutter-signup"),
-                              headers: <String, String>{
-                                'Content-Type': 'application/json; charset=UTF-8',
-                              },
-                              body: jsonEncode(<String, String>{
-                                'email': email,
-                                'username': username,
-                                'password1': password1,
-                                'password2': password2,
-                              })
-                            );
-      
-                            if (response.statusCode == 200) {
-                              Map<String, dynamic> data = jsonDecode(response.body);
-                              await storage.write(
-                                key: "token", 
-                                value: data["token"]
-                              );
+                          onPressed: () async {
+                            if (_registerFormKey.currentState!.validate()) {
+                              final response = await request.post(
+                                  "http://10.0.2.2:8000/auth/signup",
+                                  jsonEncode(<String, String>{
+                                    'email': email,
+                                    'username': username,
+                                    'password1': password1,
+                                    'password2': password2,
+                                  }));
 
-                              Navigator.of(context)
-                                .pushNamedAndRemoveUntil(
-                                  '/', 
-                                  (Route<dynamic> route) => false);
-
-                            } else {
-                              _showErrors(context, jsonDecode(response.body));
+                              if (response["status"] == true) {
+                                await request
+                                    .login("http://10.0.2.2:8000/auth/login", {
+                                  // .login("http://localhost:8000/auth/login", {
+                                  'username': username,
+                                  'password': password1,
+                                });
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    '/', (Route<dynamic> route) => false);
+                              } else {
+                                _showErrors(context, response);
+                              }
                             }
-                          }
-                        },
-                        child: const Text(
-                          "Register",
-                          style: TextStyle(
-                            fontSize: 20,
+                          },
+                          child: const Text(
+                            "Register",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-      
-              const SizedBox( height: 10, ),
-              RichText(
-                text: TextSpan(
-                  text: "Sudah memiliki akun?",
-                  style: const TextStyle(
-                    color: Colors.black,
+                    ],
                   ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      Navigator.popAndPushNamed(context, "/login");
-                    }
                 ),
-              ),
-            ],
+                const SizedBox(
+                  height: 10,
+                ),
+                RichText(
+                  text: TextSpan(
+                      text: "Sudah memiliki akun?",
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.popAndPushNamed(context, "/login");
+                        }),
+                ),
+              ],
+            ),
           ),
-        ),
-      )
-    );
+        ));
   }
 }

@@ -7,7 +7,6 @@ import '../widgets/donor_bar.dart';
 import '../widgets/recipient_bar.dart';
 import '../widgets/carousel.dart';
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -20,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "donor": 0,
     "recipient": 0,
     "user": 0,
-  }; 
+  };
   List<Map<String, String>> carouselData = [];
 
   @override
@@ -31,9 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> fetchCountData() async {
-    final response = await http.
-            get(Uri.parse("http://10.0.2.2:8000/api/counts"));
-            // get(Uri.parse("http://localhost:8000/api/counts"));
+    final response =
+        await http.get(Uri.parse("http://10.0.2.2:8000/api/counts"));
+    // get(Uri.parse("http://localhost:8000/api/counts"));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -46,9 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> fetchSlides() async {
-    final response = await http.
-            get(Uri.parse("http://10.0.2.2:8000/api/slides"));
-            // get(Uri.parse("http://localhost:8000/api/slides"));
+    final response =
+        await http.get(Uri.parse("http://10.0.2.2:8000/api/slides"));
+    // get(Uri.parse("http://localhost:8000/api/slides"));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -73,9 +72,15 @@ class _HomeScreenState extends State<HomeScreen> {
       color: const Color.fromRGBO(210, 224, 239, 1),
       child: Column(
         children: <Widget>[
-          const SizedBox( height: 20, ),
-          Carousel(carouselData: carouselData,),
-          const SizedBox(height: 30,),
+          const SizedBox(
+            height: 20,
+          ),
+          Carousel(
+            carouselData: carouselData,
+          ),
+          const SizedBox(
+            height: 30,
+          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Column(
@@ -87,12 +92,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Color.fromRGBO(32, 59, 97, 1),
                   ),
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 DonorBar(
                   donorCount: countData["donor"]!,
                   userCount: countData["user"]!,
                 ),
-                const SizedBox(height:30),
+                const SizedBox(height: 30),
                 RecipientBar(
                   recipientCount: countData["recipient"]!,
                   userCount: countData["user"]!,
