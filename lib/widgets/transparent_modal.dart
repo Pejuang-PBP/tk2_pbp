@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TransparentModalScreen extends StatelessWidget {
-  const TransparentModalScreen({ 
-    Key? key, required this.header, required this.desc 
-  }) : super(key: key);
+  const TransparentModalScreen(
+      {Key? key, required this.header, required this.desc})
+      : super(key: key);
 
   final String header;
   final String desc;
@@ -22,7 +22,7 @@ class TransparentModalScreen extends StatelessWidget {
           margin: const EdgeInsets.all(15),
           child: Center(
             child: Card(
-              shape: RoundedRectangleBorder (
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Container(
@@ -40,7 +40,9 @@ class TransparentModalScreen extends StatelessWidget {
                         color: Color.fromRGBO(32, 59, 97, 1),
                       ),
                     ),
-                    const SizedBox( height: 10, ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     const Divider(
                       color: Color.fromRGBO(32, 59, 97, 1),
                       height: 15,
@@ -48,7 +50,9 @@ class TransparentModalScreen extends StatelessWidget {
                       indent: 50,
                       endIndent: 50,
                     ),
-                    const SizedBox( height: 10, ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Text(
                       desc,
                       textAlign: TextAlign.center,

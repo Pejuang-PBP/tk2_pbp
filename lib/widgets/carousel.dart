@@ -19,7 +19,7 @@ class Carousel extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       width: double.infinity,
       child: CarouselSlider(
-          options: CarouselOptions(
+        options: CarouselOptions(
           autoPlay: true,
           aspectRatio: 2.0,
           enlargeCenterPage: true,
@@ -28,17 +28,15 @@ class Carousel extends StatelessWidget {
           return InkWell(
             onTap: () {
               Navigator.of(context).push(PageRouteBuilder(
-                opaque: false,
-                pageBuilder: (BuildContext context, _, __) => 
-                  TransparentModalScreen(
-                    header: item["header"]! , desc: item["desc"]!
-                  )
-              ));
+                  opaque: false,
+                  pageBuilder: (BuildContext context, _, __) =>
+                      TransparentModalScreen(
+                          header: item["header"]!, desc: item["desc"]!)));
             },
             child: Container(
               margin: const EdgeInsets.all(5),
               child: Card(
-                shape: RoundedRectangleBorder (
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Container(
@@ -55,7 +53,9 @@ class Carousel extends StatelessWidget {
                           color: Color.fromRGBO(32, 59, 97, 1),
                         ),
                       ),
-                      const SizedBox( height: 10, ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       const Divider(
                         color: Color.fromRGBO(32, 59, 97, 1),
                         height: 15,

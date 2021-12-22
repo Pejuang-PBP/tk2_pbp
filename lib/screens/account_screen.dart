@@ -16,19 +16,15 @@ class AccountScreen extends StatelessWidget {
           child: TextButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(
-                const Color.fromRGBO(204, 23, 40, 1)
-              ),
-              foregroundColor: MaterialStateProperty.all<Color>(
-                Colors.white
-              ),
+                  const Color.fromRGBO(204, 23, 40, 1)),
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
               overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.pressed)) {
-                    return const Color.fromRGBO(255, 0, 0, 1);
-                  }
-                  return null; // Defer to the widget's default.
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.pressed)) {
+                  return const Color.fromRGBO(255, 0, 0, 1);
                 }
-              ),
+                return null; // Defer to the widget's default.
+              }),
             ),
             onPressed: () {
               Navigator.pushNamed(context, "/login");
