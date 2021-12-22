@@ -13,11 +13,13 @@ class CookieRequest {
 
   bool loggedIn = false;
   bool initialized = false;
+  String? username = "";
 
   Future init(BuildContext context) async {
     if (!initialized) {
       local = await SharedPreferences.getInstance();
       String? savedCookies = local.getString("cookies");
+      username = local.getString("username");
       if (savedCookies != null) {
         cookies = Map<String, String>.from(json.decode(savedCookies));
         if (cookies['sessionid'] != null) {
@@ -33,8 +35,18 @@ class CookieRequest {
     initialized = true;
   }
 
-  Future persist(String cookies) async {
-    local.setString("cookies", cookies);
+  Future persist(String key, String data) async {
+    local.setString(key, data);
+  }
+
+  Future delete(String key) async {
+    local.remove(key);
+  }
+
+  Future clear() async {
+    local.clear();
+    username = null;
+    loggedIn = false;
   }
 
   Future<Map> login(String url, dynamic data) async {
@@ -50,6 +62,8 @@ class CookieRequest {
 
     if (response.statusCode == 200) {
       loggedIn = true;
+      username = json.decode(response.body)["username"];
+      persist("username", username!);
     } else {
       loggedIn = false;
     }
@@ -97,7 +111,7 @@ class CookieRequest {
 
       headers['cookie'] = _generateCookieHeader();
       String cookieObject = (const JsonEncoder()).convert(cookies);
-      persist(cookieObject);
+      persist("cookies", cookieObject);
     }
   }
 
