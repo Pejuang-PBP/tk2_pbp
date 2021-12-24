@@ -2,7 +2,6 @@ library dashboard;
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tk2_pbp/components/page_header.dart';
 import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
 

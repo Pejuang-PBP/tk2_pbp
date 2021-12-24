@@ -6,14 +6,11 @@ import 'package:tk2_pbp/helpers/authenticated_request.dart';
 
 import 'package:tk2_pbp/screens/request_donor.dart';
 
-import 'package:tk2_pbp/pages/home.dart';
 import 'package:tk2_pbp/pages/profile.dart';
 import 'package:tk2_pbp/pages/dashboard.dart';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:tk2_pbp/screens/home_screen.dart';
 import 'package:tk2_pbp/screens/account_screen.dart';
-import 'package:tk2_pbp/screens/account_authed_screen.dart';
 import 'package:tk2_pbp/screens/login_screen.dart';
 import 'package:tk2_pbp/screens/register_screen.dart';
 
