@@ -61,7 +61,7 @@ class _RequestDonorState extends State<RequestDonorPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               const PageHeader(
-                  title: "Welcome to your dashboard, Adrian.",
+                  title: "Request Donor",
                   subtitle: "Select one of the actions below."),
               MenuItem(
                   icon: const Icon(Icons.bloodtype_outlined, size: 32.0),

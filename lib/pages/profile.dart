@@ -16,6 +16,17 @@ class Profile extends StatefulWidget {
 
 class ProfileState extends State<Profile> {
   final title = "Dashboard";
+  late CookieRequest request = CookieRequest();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      setState(() {
+        request = Provider.of<CookieRequest>(context, listen: false);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,13 +74,13 @@ class ProfileState extends State<Profile> {
                               ),
                               margin: const EdgeInsets.fromLTRB(0, 0, 0, 12.0)),
                           Container(
-                              child: const Text(
-                                "Adrian Ardizza",
-                                style: TextStyle(
+                              child: Text(
+                                request.username ?? "",
+                                style: const TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.w500),
                               ),
                               margin: const EdgeInsets.fromLTRB(0, 0, 0, 4.0)),
-                          Text("Greater Jakarta Area",
+                          Text("Regular User",
                               style: TextStyle(
                                   fontSize: 16, color: Colors.grey[500]))
                         ]),
@@ -104,8 +115,6 @@ class ProfileState extends State<Profile> {
             icon: const Icon(Icons.logout),
             subtitle: "Klik tombol ini untuk keluar dari akun.",
             onClick: () async {
-              final request =
-                  Provider.of<CookieRequest>(context, listen: false);
               request.clear().then((_) {
                 Navigator.popAndPushNamed(context, "/");
               });

@@ -3,11 +3,38 @@ library dashboard;
 import 'package:flutter/material.dart';
 import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/components/page_header.dart';
+import 'package:provider/provider.dart';
+import 'package:tk2_pbp/helpers/authenticated_request.dart';
 
-class Dashboard extends StatelessWidget {
-  const Dashboard({Key? key, required this.updatePage}) : super(key: key);
-  final Function(int x) updatePage;
+class Dashboard extends StatefulWidget {
+  const Dashboard({Key? key}) : super(key: key);
+  @override
+  DashboardState createState() {
+    return DashboardState();
+  }
+}
+
+class DashboardState extends State<Dashboard> {
   final title = "Dashboard";
+  CookieRequest request = CookieRequest();
+  String username = "";
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      final _request = Provider.of<CookieRequest>(context, listen: false);
+
+      if (!_request.loggedIn) {
+        Navigator.popAndPushNamed(context, "/login");
+      } else {
+        setState(() {
+          request = _request;
+          username = _request.username ?? "";
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +64,8 @@ class Dashboard extends StatelessWidget {
         // horizontal).
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          const PageHeader(
-              title: "Welcome to your dashboard, Adrian.",
+          PageHeader(
+              title: "Welcome to your dashboard, $username.",
               subtitle:
                   "Select one of the actions below to begin your KonvaSearch journey"),
           MenuItem(
@@ -52,9 +79,7 @@ class Dashboard extends StatelessWidget {
               icon: const Icon(Icons.bloodtype, size: 32.0),
               title: "Respond to a Request",
               subtitle: "Respond to a donation request.",
-              onClick: () {
-                updatePage(1);
-              }),
+              onClick: () {}),
         ],
       ),
     );

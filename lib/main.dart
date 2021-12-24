@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
               '/': (ctx) => const MyHomePage(title: 'KonvaSearch'),
               LoginScreen.routeName: (ctx) => const LoginScreen(),
               RegisterScreen.routeName: (ctx) => const RegisterScreen(),
+              '/request-donor': (ctx) => const RequestDonorPage()
             }));
   }
 }
@@ -73,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Page components
     _pages = <Widget>[
       const HomeScreen(),
-      const Center(),
+      const Dashboard(),
       const AccountScreen(),
       //       Dashboard(updatePage: (int x) {
       //   _setPage(x);
