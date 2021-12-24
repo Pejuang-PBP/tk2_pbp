@@ -67,7 +67,7 @@ class _AccountAuthedScreenState extends State<AccountAuthedScreen> {
               child: const Text("Test Auth"),
               onPressed: () async {
                 final response =
-                    await request.post("http://10.0.2.2:8000/test", {
+                    await request.post("http://localhost:8000/test", {
                   "test": "blebloblu",
                 });
                 showDialog(

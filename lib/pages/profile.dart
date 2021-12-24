@@ -1,11 +1,20 @@
 library dashboard;
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tk2_pbp/components/page_header.dart';
 import 'package:tk2_pbp/components/menu_items.dart';
+import 'package:tk2_pbp/helpers/authenticated_request.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
+  @override
+  ProfileState createState() {
+    return ProfileState();
+  }
+}
+
+class ProfileState extends State<Profile> {
   final title = "Dashboard";
 
   @override
@@ -90,12 +99,18 @@ class Profile extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             vertical: 20.0, horizontal: 20.0))
                   ]))),
-          PageHeader(
-              title: "Notifications", subtitle: "Here are your notifications."),
           MenuItem(
-              title: "Request Anda Diterima",
-              subtitle: "Silahkan cek page request anda.",
-              onClick: () {}),
+            title: "Logout",
+            icon: const Icon(Icons.logout),
+            subtitle: "Klik tombol ini untuk keluar dari akun.",
+            onClick: () async {
+              final request =
+                  Provider.of<CookieRequest>(context, listen: false);
+              request.clear().then((_) {
+                Navigator.popAndPushNamed(context, "/");
+              });
+            },
+          ),
         ],
       ),
     ));

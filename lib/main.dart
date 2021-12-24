@@ -74,8 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _pages = <Widget>[
       const HomeScreen(),
       const Center(),
-      const Center(),
-      const Center(),
       const AccountScreen(),
       //       Dashboard(updatePage: (int x) {
       //   _setPage(x);
@@ -110,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
     request.init(context);
 
     if (request.loggedIn) {
-      _pages[4] = const AccountAuthedScreen();
+      _pages[2] = const Profile();
     }
 
     List<BottomNavigationBarItem> menuItems = const [
