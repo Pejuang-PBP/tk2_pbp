@@ -1,20 +1,36 @@
-// ignore_for_file: unused_local_variable
-
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-
 import 'package:provider/provider.dart';
+
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-  static const routeName = '/login';
-  @override
-  _LoginPageState createState() => _LoginPageState();
+void _showErrors(context, Map errors) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Center(child: Text(errors["message"].toString())),
+            ),
+          ],
+        );
+      });
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginScreen extends StatefulWidget {
+  static const routeName = '/login';
+
+  const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final _loginFormKey = GlobalKey<FormState>();
+
   bool isPasswordVisible = false;
   void togglePasswordView() {
     setState(() {
@@ -24,12 +40,13 @@ class _LoginPageState extends State<LoginPage> {
 
   String username = "";
   String password1 = "";
+
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: const Color.fromRGBO(210, 224, 239, 1),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(30),
@@ -46,12 +63,12 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 30,
               ),
-// Form
+              // Form
               Form(
                 key: _loginFormKey,
                 child: Column(
                   children: [
-// Username
+                    // Username
                     Container(
                       decoration: BoxDecoration(
                         color: const Color.fromRGBO(250, 250, 250, 0.95),
@@ -82,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 20,
                     ),
-// Password
+                    // Password
                     Container(
                         decoration: BoxDecoration(
                           color: const Color.fromRGBO(250, 250, 250, 0.95),
@@ -121,8 +138,9 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 30,
                     ),
-// Login Button
-                    SizedBox(
+                    // Login Button
+                    // ignore: sized_box_for_whitespace
+                    Container(
                       width: double.infinity,
                       child: TextButton(
                         style: ButtonStyle(
@@ -136,33 +154,25 @@ class _LoginPageState extends State<LoginPage> {
                             if (states.contains(MaterialState.pressed)) {
                               return const Color.fromRGBO(255, 0, 0, 1);
                             }
-                            return null; // Defer to the widget's
+                            return null;
                           }),
                         ),
                         onPressed: () async {
                           if (_loginFormKey.currentState!.validate()) {
                             final response = await request
-                                .login("http://localhost:8000/auth/login", {
+                                .login("http://10.0.2.2:8000/auth/login", {
+                              // .login("http://localhost:8000/auth/login", {
                               'username': username,
                               'password': password1,
                             });
+
                             if (request.loggedIn) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(
-                                    "Successfully logged in, Welcome $username!"),
-                              ));
-                              Navigator.pop(context);
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/', (Route<dynamic> route) => false);
                             } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(
-                                    "Failed to login, please check your username/password."),
-                              ));
+                              _showErrors(context, response);
                             }
-// print(username);
-// print(password1);
-                          } else {}
+                          }
                         },
                         child: const Text(
                           "Login",
