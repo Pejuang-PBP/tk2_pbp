@@ -1,10 +1,78 @@
 // ignore_for_file: unused_local_variable, avoid_print
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+
+import 'package:tk2_pbp/styles/styles.dart';
+import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
 import 'package:tk2_pbp/components/page_header.dart';
+
+class DonorCard extends StatelessWidget {
+  const DonorCard({
+    Key? key,
+    this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onAccept,
+  }) : super(key: key);
+
+  final Icon? icon;
+  final String title;
+  final String subtitle;
+  final Function() onAccept;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2.0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: Material(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          color: Colors.white,
+          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+            Padding(
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: icon,
+                      title: Text(title, style: TextStyles.menuItem),
+                      subtitle: Container(
+                        child: Text(
+                          subtitle,
+                          style: TextStyles.subtitleStyle,
+                        ),
+                        margin: const EdgeInsets.fromLTRB(0, 4.0, 0, 0),
+                      ),
+                      mouseCursor: SystemMouseCursors.click,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        const SizedBox(width: 8),
+                        TextButton(
+                          child: Text(
+                            'ACCEPT',
+                            style: TextStyle(
+                                color: Colors.green[400],
+                                fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: onAccept,
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 12.0, horizontal: 8.0)),
+          ])),
+    );
+  }
+}
 
 class RequestDonorPotential extends StatefulWidget {
   const RequestDonorPotential({Key? key}) : super(key: key);
@@ -23,9 +91,15 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
       request
           .get("http://localhost:8000/dashboard-pencari/api/donor")
           .then((item) {
-        print(item);
+        List<dynamic> parsedList = item;
+        Map<dynamic, dynamic> chosenFound = parsedList
+            .firstWhere((item) => item['chosen'] == true, orElse: () => {});
         setState(() {
-          donors = item;
+          if (chosenFound.isEmpty) {
+            donors = item;
+          } else {
+            donors = [chosenFound];
+          }
         });
       });
     });
@@ -33,6 +107,20 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
 
   @override
   Widget build(BuildContext context) {
+    Iterable<DonorCard> donorComponents = donors.map((item) {
+      Map<String, dynamic> donorData = jsonDecode(item['donor_data'])[0];
+      return DonorCard(
+          title: donorData['fields']['nama'],
+          subtitle: "Golongan Darah: " +
+              donorData['fields']['golongan_darah'] +
+              donorData['fields']['rhesus'],
+          onAccept: () {
+            final request = Provider.of<CookieRequest>(context, listen: false);
+            request.post("http://localhost:8000/dashboard-pencari/api/donor",
+                {"id": item["pk"].toString()});
+          });
+    });
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -68,10 +156,55 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
             // axis because Columns are vertical (the cross axis would be
             // horizontal).
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const <Widget>[
-              PageHeader(
+            children: <Widget>[
+              const PageHeader(
                   title: "Request Details",
-                  subtitle: "The following is information about your request."),
+                  subtitle: "Click one of the requests to accept it."),
+              ...donors.map((item) {
+                Map<String, dynamic> donorData =
+                    jsonDecode(item['donor_data'])[0];
+                if (!item['chosen']) {
+                  return DonorCard(
+                    title: donorData['fields']['nama'],
+                    subtitle: "Golongan Darah: " +
+                        donorData['fields']['golongan_darah'] +
+                        donorData['fields']['rhesus'],
+                    onAccept: () {
+                      final request =
+                          Provider.of<CookieRequest>(context, listen: false);
+                      request.post(
+                          "http://localhost:8000/dashboard-pencari/api/donor",
+                          {"id": item["pk"].toString()}).then((item) {
+                        if (item["status"] == "success") {
+                          request
+                              .get(
+                                  "http://localhost:8000/dashboard-pencari/api/donor")
+                              .then((item) {
+                            List<dynamic> parsedList = item;
+                            Map<dynamic, dynamic> chosenFound = parsedList
+                                .firstWhere((item) => item['chosen'] == true,
+                                    orElse: () => {});
+                            setState(() {
+                              if (chosenFound.isEmpty) {
+                                donors = item;
+                              } else {
+                                donors = [chosenFound];
+                              }
+                            });
+                          });
+                        }
+                      });
+                    },
+                  );
+                }
+                return MenuItem(
+                    title: donorData['fields']['nama'],
+                    subtitle: "Golongan Darah: " +
+                        donorData['fields']['golongan_darah'] +
+                        donorData['fields']['rhesus'] +
+                        "\nAccepted as Donor",
+                    onClick: () {});
+              })
             ],
           ),
         ));
