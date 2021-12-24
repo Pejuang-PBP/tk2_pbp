@@ -3,8 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
 
 import 'package:tk2_pbp/screens/login.dart';
+import 'package:tk2_pbp/screens/request_donor.dart';
 
 import 'package:tk2_pbp/pages/home.dart';
+import 'package:tk2_pbp/pages/profile.dart';
+import 'package:tk2_pbp/pages/dashboard.dart';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -40,7 +43,10 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           home: const MyHomePage(title: 'KonvaSearch'),
-          routes: {"/login": (BuildContext context) => const LoginPage()},
+          routes: {
+            "/login": (BuildContext context) => const LoginPage(),
+            "/request-donor": (BuildContext context) => const RequestDonorPage()
+          },
         ));
   }
 }
@@ -75,7 +81,14 @@ class _MyHomePageState extends State<MyHomePage> {
     _pageIndex = 0;
 
     // Page components
-    _pages = <Widget>[const Home()];
+    _pages = <Widget>[
+      const Home(),
+      Dashboard(updatePage: (int x) {
+        _setPage(x);
+        _pageController.jumpToPage(x);
+      }),
+      const Profile()
+    ];
 
     // Page controller
     _pageController = PageController(initialPage: _pageIndex);
@@ -109,24 +122,6 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Icon(Icons.dashboard),
             padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
         label: 'Dashboard',
-      ),
-      BottomNavigationBarItem(
-        icon: Padding(
-            child: Icon(Icons.bloodtype_outlined),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
-        activeIcon: Padding(
-            child: Icon(Icons.bloodtype),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
-        label: 'Request',
-      ),
-      BottomNavigationBarItem(
-        icon: Padding(
-            child: Icon(Icons.support_agent_outlined),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
-        activeIcon: Padding(
-            child: Icon(Icons.support_agent),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
-        label: 'Reports',
       ),
       BottomNavigationBarItem(
           icon: Padding(

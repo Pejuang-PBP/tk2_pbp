@@ -5,12 +5,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: ElevatedButton(
-        onPressed: () => Navigator.pushNamed(context, "/login"),
-        child: const Text('Submit'),
-      ),
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.0),
     );
   }
 }
