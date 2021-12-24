@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, avoid_print
 
 import 'package:flutter/material.dart';
 
@@ -7,16 +7,13 @@ import 'package:tk2_pbp/helpers/authenticated_request.dart';
 import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/components/page_header.dart';
 
-import 'package:tk2_pbp/screens/request_donor_details.dart';
-import 'package:tk2_pbp/screens/request_donor_potential.dart';
-
-class RequestDonorPage extends StatefulWidget {
-  const RequestDonorPage({Key? key}) : super(key: key);
+class RequestDonorDetails extends StatefulWidget {
+  const RequestDonorDetails({Key? key}) : super(key: key);
   @override
-  _RequestDonorState createState() => _RequestDonorState();
+  _RequestDonorDetailsState createState() => _RequestDonorDetailsState();
 }
 
-class _RequestDonorState extends State<RequestDonorPage> {
+class _RequestDonorDetailsState extends State<RequestDonorDetails> {
   List<dynamic> requestDonor = [];
 
   @override
@@ -27,6 +24,7 @@ class _RequestDonorState extends State<RequestDonorPage> {
       request
           .get("http://localhost:8000/dashboard-pencari/api/request")
           .then((item) {
+        print(item);
         setState(() {
           requestDonor = item;
         });
@@ -39,7 +37,7 @@ class _RequestDonorState extends State<RequestDonorPage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text('Request Donor'),
+          title: const Text('Request Details'),
           backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
           actions: <Widget>[
             IconButton(
@@ -73,41 +71,32 @@ class _RequestDonorState extends State<RequestDonorPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               const PageHeader(
-                  title: "Request Donor",
-                  subtitle: "Select one of the actions below."),
-              requestDonor.isEmpty
-                  ? MenuItem(
-                      icon: const Icon(Icons.bloodtype_outlined, size: 32.0),
-                      title: "Create Donation Request",
-                      subtitle:
-                          "You have not created a Donation Request, click here to create one.",
-                      onClick: () {})
-                  : Column(children: [
-                      MenuItem(
-                          icon:
-                              const Icon(Icons.bloodtype_outlined, size: 32.0),
-                          title: "View Donation Request",
-                          subtitle:
-                              "Click here to view your Donation Request details.",
-                          onClick: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RequestDonorDetails()));
-                          }),
-                      MenuItem(
-                          icon: const Icon(Icons.bloodtype, size: 32.0),
-                          title: "View Potential Donors",
-                          subtitle: "Click here to view Potential Donors.",
-                          onClick: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RequestDonorPotential()));
-                          }),
-                    ])
+                  title: "Request Details",
+                  subtitle: "The following is information about your request."),
+              requestDonor.isNotEmpty
+                  ? Column(
+                      children: [
+                        MenuItem(
+                            onClick: () {},
+                            title: "Name",
+                            subtitle: requestDonor[0]["fields"]["nama"]),
+                        MenuItem(
+                            onClick: () {},
+                            title: "Nomor Induk Kependudukan",
+                            subtitle: requestDonor[0]["fields"]["nomor_induk"]),
+                        MenuItem(
+                            onClick: () {},
+                            title: "Nomor Telepon",
+                            subtitle: requestDonor[0]["fields"]["nomor_hp"]),
+                        MenuItem(
+                            onClick: () {},
+                            title: "Golongan Darah",
+                            subtitle: requestDonor[0]["fields"]
+                                    ["golongan_darah"] +
+                                requestDonor[0]["fields"]["rhesus"]),
+                      ],
+                    )
+                  : const Text("NO")
             ],
           ),
         ));
