@@ -160,8 +160,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () async {
                           if (_loginFormKey.currentState!.validate()) {
                             final response = await request
-                                .login("http://localhost:8000/auth/login", {
-                              // .login("http://localhost:8000/auth/login", {
+                                // .login("http://localhost:8000/auth/login", {
+                              .login("http://10.0.2.2:8000/auth/login", {
                               'username': username,
                               'password': password1,
                             });

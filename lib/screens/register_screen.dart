@@ -248,6 +248,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             if (_registerFormKey.currentState!.validate()) {
                               final response = await request.post(
                                   "http://10.0.2.2:8000/auth/signup",
+                                  // "http://localhost:8000/auth/signup",
                                   jsonEncode(<String, String>{
                                     'email': email,
                                     'username': username,
