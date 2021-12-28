@@ -1,28 +1,144 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 
 class CookieRequest {
   Map<String, String> headers = {};
+  Map<String, String> cookies = {};
+  final http.Client _client = http.Client();
 
-  Future<Map> get(String url) async {
-    http.Response response = await http.get(Uri.parse(url), headers: headers);
-    updateCookie(response);
-    return json.decode(response.body); // Expects and returns JSON request body
-  }
+  late SharedPreferences local;
 
-  Future<Map> post(String url, dynamic data) async {
-    http.Response response =
-        await http.post(Uri.parse(url), body: data, headers: headers);
-    updateCookie(response);
-    return json.decode(response.body); // Expects and returns JSON request body
-  }
+  bool loggedIn = false;
+  bool initialized = false;
+  String? username = "";
 
-  void updateCookie(http.Response response) {
-    String? rawCookie = response.headers['set-cookie'];
-    if (rawCookie != null) {
-      int index = rawCookie.indexOf(';');
-      headers['cookie'] =
-          (index == -1) ? rawCookie : rawCookie.substring(0, index);
+  Future init(BuildContext context) async {
+    if (!initialized) {
+      local = await SharedPreferences.getInstance();
+      String? savedCookies = local.getString("cookies");
+      username = local.getString("username");
+      if (savedCookies != null) {
+        cookies = Map<String, String>.from(json.decode(savedCookies));
+        if (cookies['sessionid'] != null) {
+          loggedIn = true;
+          headers['cookie'] = _generateCookieHeader();
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Successfully logged in. Welcome back!"),
+          ));
+          debugPrint(headers['cookie']);
+        }
+      }
     }
+    initialized = true;
+  }
+
+  Future persist(String key, String data) async {
+    local.setString(key, data);
+  }
+
+  Future delete(String key) async {
+    local.remove(key);
+  }
+
+  Future clear() async {
+    local.clear();
+    username = null;
+    loggedIn = false;
+  }
+
+  Future<dynamic> login(String url, dynamic data) async {
+    if (kIsWeb) {
+      dynamic c = _client;
+      c.withCredentials = true;
+    }
+
+    http.Response response =
+        await _client.post(Uri.parse(url), body: data, headers: headers);
+
+    _updateCookie(response);
+
+    if (response.statusCode == 200) {
+      loggedIn = true;
+      username = json.decode(response.body)["username"];
+      persist("username", username!);
+    } else {
+      loggedIn = false;
+    }
+
+    return json.decode(response.body); // Expects and returns JSON request body
+  }
+
+  Future<dynamic> get(String url) async {
+    if (kIsWeb) {
+      dynamic c = _client;
+      c.withCredentials = true;
+    }
+    http.Response response =
+        await _client.get(Uri.parse(url), headers: headers);
+    _updateCookie(response);
+    debugPrint(headers.toString());
+    return json.decode(response.body); // Expects and returns JSON request body
+  }
+
+  Future<dynamic> post(String url, dynamic data) async {
+    if (kIsWeb) {
+      dynamic c = _client;
+      c.withCredentials = true;
+    }
+    http.Response response =
+        await _client.post(Uri.parse(url), body: data, headers: headers);
+    _updateCookie(response);
+    debugPrint(headers.toString());
+    return json.decode(response.body); // Expects and returns JSON request body
+  }
+
+  void _updateCookie(http.Response response) {
+    String? allSetCookie = response.headers['set-cookie'];
+
+    if (allSetCookie != null) {
+      var setCookies = allSetCookie.split(',');
+
+      for (var setCookie in setCookies) {
+        var cookies = setCookie.split(';');
+
+        for (var cookie in cookies) {
+          _setCookie(cookie);
+        }
+      }
+
+      headers['cookie'] = _generateCookieHeader();
+      String cookieObject = (const JsonEncoder()).convert(cookies);
+      persist("cookies", cookieObject);
+    }
+  }
+
+  void _setCookie(String rawCookie) {
+    if (rawCookie.isNotEmpty) {
+      var keyValue = rawCookie.split('=');
+      if (keyValue.length == 2) {
+        var key = keyValue[0].trim();
+        var value = keyValue[1];
+
+        // ignore keys that aren't cookies
+        if (key == 'path' || key == 'expires') return;
+
+        cookies[key] = value;
+      }
+    }
+  }
+
+  String _generateCookieHeader() {
+    String cookie = "";
+
+    for (var key in cookies.keys) {
+      if (cookie.isNotEmpty) cookie += ";";
+      String? newCookie = cookies[key];
+      cookie += '$key=$newCookie';
+    }
+
+    return cookie;
   }
 }
