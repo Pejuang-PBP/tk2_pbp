@@ -9,6 +9,7 @@ import 'package:tk2_pbp/components/page_header.dart';
 
 import 'package:tk2_pbp/screens/request_donor_details.dart';
 import 'package:tk2_pbp/screens/request_donor_potential.dart';
+import 'package:tk2_pbp/screens/notifications.dart';
 
 class RequestDonorPage extends StatefulWidget {
   const RequestDonorPage({Key? key}) : super(key: key);
@@ -46,8 +47,10 @@ class _RequestDonorState extends State<RequestDonorPage> {
               icon: const Icon(Icons.add_alert),
               tooltip: 'Notification',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is notifications')));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Notifications()));
               },
             ),
           ],
