@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
 
 import 'package:tk2_pbp/screens/request_donor.dart';
+import 'package:tk2_pbp/screens/respond_request.dart';
 
 import 'package:tk2_pbp/pages/profile.dart';
 import 'package:tk2_pbp/pages/dashboard.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
               '/': (ctx) => const MyHomePage(title: 'KonvaSearch'),
               LoginScreen.routeName: (ctx) => const LoginScreen(),
               RegisterScreen.routeName: (ctx) => const RegisterScreen(),
-              '/request-donor': (ctx) => const RequestDonorPage()
+              '/request-donor': (ctx) => const RequestDonorPage(),
+              '/respond-request': (ctx) => const ResponRequestDonor(),
             }));
   }
 }
@@ -145,16 +147,15 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           // Add your onPressed code here!
           Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FAQ(),
-            ));
+              context,
+              MaterialPageRoute(
+                builder: (context) => FAQ(),
+              ));
         },
         backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
         highlightElevation: 50,
         tooltip: 'FAQ',
         child: const Icon(Icons.help_outlined),
-
       ),
       appBar: AppBar(
         title: Row(children: [
