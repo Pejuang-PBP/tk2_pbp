@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
 import 'package:provider/provider.dart';

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tk2_pbp/screens/form_donor.dart';
-import 'package:tk2_pbp/helpers/authenticated_request.dart';
-import 'package:provider/provider.dart';
 
 class FormDonorScreen extends StatefulWidget {
   static const routeName = '/form_donor';
@@ -15,7 +13,6 @@ class FormDonorScreen extends StatefulWidget {
 class _FormDonorScreenState extends State<FormDonorScreen> {
     @override
     Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
     return Scaffold(
         appBar: AppBar(
             title: Text("Form Donor"),
