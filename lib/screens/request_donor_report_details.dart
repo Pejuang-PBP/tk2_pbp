@@ -1,36 +1,40 @@
+// ignore_for_file: unused_local_variable, avoid_print
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:provider/provider.dart';
 
 import 'package:tk2_pbp/components/menu_items.dart';
-import 'package:tk2_pbp/components/page_header.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
+import 'package:tk2_pbp/components/page_header.dart';
 
-class Notifications extends StatefulWidget {
-  const Notifications({Key? key}) : super(key: key);
+class RequestDonorReportDetails extends StatefulWidget {
+  final dynamic item;
+  const RequestDonorReportDetails({Key? key, required this.item})
+      : super(
+          key: key,
+        );
 
   @override
-  _NotificationState createState() => _NotificationState();
+  _RequestDonorReportDetailsState createState() =>
+      _RequestDonorReportDetailsState();
 }
 
-class _NotificationState extends State<Notifications> {
-  late CookieRequest request = CookieRequest();
+class _RequestDonorReportDetailsState extends State<RequestDonorReportDetails> {
   List<dynamic> notifications = [];
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      setState(() {
-        request = Provider.of<CookieRequest>(context, listen: false);
-        request
-            .get("http://localhost:8000/dashboard-pencari/api/notifications")
-            .then((res) {
-          setState(() {
-            notifications = res;
-          });
+      final request = Provider.of<CookieRequest>(context, listen: false);
+      request
+          .get("http://localhost:8000/dashboard-pencari/api/report")
+          .then((item) {
+        setState(() {
+          notifications = item;
         });
       });
     });
@@ -41,13 +45,13 @@ class _NotificationState extends State<Notifications> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text('Notifications'),
+          title: const Text('Request Details'),
           backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
         ),
         body: Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
-          child: ListView(
+          child: Column(
             // Column is also a layout widget. It takes a list of children and
             // arranges them vertically. By default, it sizes itself to fit its
             // children horizontally, and tries to be as tall as its parent.
@@ -62,20 +66,23 @@ class _NotificationState extends State<Notifications> {
             // center the children vertically; the main axis here is the vertical
             // axis because Columns are vertical (the cross axis would be
             // horizontal).
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const PageHeader(
-                  title: "Your Notifications",
-                  subtitle: "Here are your latest notifications."),
-              ...notifications.map((item) {
-                if (notifications.isNotEmpty) {
+              PageHeader(
+                title: widget.item['title'],
+                subtitle: "Replies to this ticket are given below.",
+              ),
+              MenuItem(
+                  title: "From: You",
+                  subtitle: "Message: " + widget.item['message'],
+                  onClick: () {}),
+              if (widget.item['replies'] != null)
+                ...jsonDecode(widget.item['replies']).map((item) {
                   return MenuItem(
-                      title: item['fields']['title'],
-                      subtitle: item['fields']['message'],
+                      title: "From: Admin",
+                      subtitle: item['fields']['message'] + "\n\nSent at: " + item['fields']['timestamp'],
                       onClick: () {});
-                } else {
-                  return const Text("EMPTY");
-                }
-              })
+                })
             ],
           ),
         ));

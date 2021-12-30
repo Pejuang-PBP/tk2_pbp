@@ -20,8 +20,8 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
   String? _tempatLahir;
   String? _alamat;
   String? _namaRumahSakit;
-  String _gender = "Laki-Laki";
-  List _listGender = ["Laki-Laki", "Perempuan"];
+  String _gender = "Laki-laki";
+  List _listGender = ["Laki-laki", "Perempuan"];
   DateTime tanggal_lahir = DateTime.now();
 
   String _goldar = "A";
@@ -38,11 +38,11 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
     "-",
   ];
 
-  String _urgency = "Low";
+  String _urgency = "LOW";
   List _listUrgency = [
-    "Low",
-    "Medium",
-    "High",
+    "LOW",
+    "MEDIUM",
+    "HIGH",
   ];
 
   Future selectDate(BuildContext context) async {
@@ -312,7 +312,7 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                     if(_formKey.currentState!.validate()){
                       _formKey.currentState!.save();
                       final response = await request.post(
-                          "http://192.168.100.114:8000/form-pencari-donor/mobile",
+                          "http://localhost:8000/form-pencari-donor/mobile",
                           jsonEncode(<String, String>{
                               "nama": _nama!,
                               "nomor_induk": _nik!,
@@ -323,7 +323,7 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                               "alamat": _alamat!,
                               "golongan_darah": _goldar,
                               "rhesus": _rhesus,
-                              "nama rumah sakit": _namaRumahSakit!,
+                              "tempat_rawat": _namaRumahSakit!,
                               "urgency": _urgency,
 
                           })
