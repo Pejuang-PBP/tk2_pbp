@@ -29,6 +29,7 @@ class lokasiUtdState extends State<lokasiUtd> {
     final response = await http.get(Uri.parse(url));
     //print(response.body);
     final items = json.decode(response.body).cast<Map<String, dynamic>>();
+    UTDs.clear();
     items.forEach((element) {
       UTDs.add(UTD.fromMap(element));
     });
@@ -39,7 +40,8 @@ class lokasiUtdState extends State<lokasiUtd> {
   }
 
   void _filterUTDs(value) {
-    filteredUTDs = UTDs.where((element) => element.kota == value).toList();
+    filteredUTDs = UTDs.where((element) =>
+        element.kota.toLowerCase() == value.toString().toLowerCase()).toList();
   }
 
   bool isVisible = false;
@@ -52,100 +54,95 @@ class lokasiUtdState extends State<lokasiUtd> {
         theme: ThemeData(
           primarySwatch: Colors.red,
         ),
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
-            appBar: AppBar(
-              title: const Text("lokasiUtd",
-                  style: TextStyle(color: Colors.white)),
-            ),
             body: ListView(children: [
-              Column(
-                children: [
-                  Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(20.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            isVisible = !isVisible;
-                          });
-                        },
-                        child: const Text("Apa itu UTD?",
-                            style:
-                                TextStyle(fontSize: 20.0, color: Colors.white)),
-                      )),
-                  Visibility(
-                    visible: isVisible,
-                    child: Container(
-                        padding: const EdgeInsets.all(20.0), child: Text(s)),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextField(
-                      onChanged: (value) {
-                        inputFilter = value;
+          Column(
+            children: [
+              Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(20.0),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          isVisible = !isVisible;
+                        });
                       },
-                      decoration: InputDecoration(
-                        hintText: "Cari kota",
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              if (inputFilter == "") {
-                                fetchData();
-                              }
-                              _filterUTDs(inputFilter);
-                            });
-                          },
-                          icon: Icon(Icons.search),
-                        ),
-                      ),
+                      child: const Text("Apa itu UTD?",
+                          style:
+                              TextStyle(fontSize: 20.0, color: Colors.white)),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            const Color.fromRGBO(0, 41, 84, 1)),
+                      ))),
+              Visibility(
+                visible: isVisible,
+                child: Container(
+                    padding: const EdgeInsets.all(20.0), child: Text(s)),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(20.0),
+                child: TextField(
+                  onChanged: (value) {
+                    inputFilter = value;
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Cari kota",
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          if (inputFilter == "") {
+                            fetchData();
+                          }
+                          _filterUTDs(inputFilter);
+                        });
+                      },
+                      icon: Icon(Icons.search),
                     ),
                   ),
-                  SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Flexible(
-                          child: DataTable(
-                        columns: const [
-                          DataColumn(
-                              label: Text('Nama',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold))),
-                          DataColumn(
-                              label: Text('Kota',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold))),
-                          DataColumn(
-                              label: Text('Alamat',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold))),
-                          DataColumn(
-                              label: Text('Jam Operasi',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold))),
-                          DataColumn(
-                              label: Text('Kontak',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold))),
-                        ],
-                        rows: filteredUTDs
-                            .map((e) => DataRow(cells: <DataCell>[
-                                  DataCell(Text(e.nama)),
-                                  DataCell(Text(e.kota)),
-                                  DataCell(Text(e.alamat)),
-                                  DataCell(Text(e.jamOperasi)),
-                                  DataCell(
-                                    Text(e.nomorTelepon.toString()),
-                                  )
-                                ]))
-                            .toList(),
-                      )))
-                ],
+                ),
               ),
-            ])));
+              SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Flexible(
+                      child: DataTable(
+                    columns: const [
+                      DataColumn(
+                          label: Text('Nama',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold))),
+                      DataColumn(
+                          label: Text('Kota',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold))),
+                      DataColumn(
+                          label: Text('Alamat',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold))),
+                      DataColumn(
+                          label: Text('Jam Operasi',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold))),
+                      DataColumn(
+                          label: Text('Kontak',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold))),
+                    ],
+                    rows: filteredUTDs
+                        .map((e) => DataRow(cells: <DataCell>[
+                              DataCell(Text(e.nama)),
+                              DataCell(Text(e.kota)),
+                              DataCell(Text(e.alamat)),
+                              DataCell(Text(e.jamOperasi)),
+                              DataCell(
+                                Text(e.nomorTelepon.toString()),
+                              )
+                            ]))
+                        .toList(),
+                  )))
+            ],
+          ),
+        ])));
   }
 }
