@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +28,6 @@ class CookieRequest {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Successfully logged in. Welcome back!"),
           ));
-          debugPrint(headers['cookie']);
         }
       }
     }
@@ -79,7 +78,6 @@ class CookieRequest {
     http.Response response =
         await _client.get(Uri.parse(url), headers: headers);
     _updateCookie(response);
-    debugPrint(headers.toString());
     return json.decode(response.body); // Expects and returns JSON request body
   }
 
@@ -91,7 +89,6 @@ class CookieRequest {
     http.Response response =
         await _client.post(Uri.parse(url), body: data, headers: headers);
     _updateCookie(response);
-    debugPrint(headers.toString());
     return json.decode(response.body); // Expects and returns JSON request body
   }
 

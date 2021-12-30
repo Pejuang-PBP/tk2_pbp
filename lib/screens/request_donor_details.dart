@@ -25,7 +25,6 @@ class _RequestDonorDetailsState extends State<RequestDonorDetails> {
       request
           .get("http://localhost:8000/dashboard-pencari/api/request")
           .then((item) {
-        print(item);
         setState(() {
           requestDonor = item;
         });

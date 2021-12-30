@@ -22,6 +22,7 @@ class _FormPencariDonorScreenState extends State<FormPencariDonorScreen> {
             Navigator.of(context).pop(true);
           },
         ),
+        backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
