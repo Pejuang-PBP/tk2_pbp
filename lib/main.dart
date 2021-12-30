@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
               LoginScreen.routeName: (ctx) => const LoginScreen(),
               RegisterScreen.routeName: (ctx) => const RegisterScreen(),
               '/request-pencari-donor': (ctx) => const RequestDonorPage(),
-              '/respond-request': (ctx) => const RespondRequestDonor(),
+              '/respond-request': (ctx) => const RespondRequestDonorPage(),
             }));
   }
 }

@@ -1,88 +1,26 @@
-// ignore_for_file: unused_local_variable, avoid_print
-
-import 'dart:convert';
+// ignore_for_file: unused_local_variable
 
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'package:tk2_pbp/screens/notifications.dart';
-
-import 'package:tk2_pbp/styles/styles.dart';
-import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
+import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/components/page_header.dart';
 
-class DonorCard extends StatelessWidget {
-  const DonorCard({
-    Key? key,
-    this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.onAccept,
-  }) : super(key: key);
+import 'package:tk2_pbp/screens/request_donor_details.dart';
+import 'package:tk2_pbp/screens/request_donor_potential.dart';
+import 'package:tk2_pbp/screens/notifications.dart';
+import 'package:tk2_pbp/screens/request_donor_report.dart';
+import 'package:tk2_pbp/screens/form_donor_screen.dart';
 
-  final Icon? icon;
-  final String title;
-  final String subtitle;
-  final Function() onAccept;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 2.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Material(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          color: Colors.white,
-          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            Padding(
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: icon,
-                      title: Text(title, style: TextStyles.menuItem),
-                      subtitle: Container(
-                        child: Text(
-                          subtitle,
-                          style: TextStyles.subtitleStyle,
-                        ),
-                        margin: const EdgeInsets.fromLTRB(0, 4.0, 0, 0),
-                      ),
-                      mouseCursor: SystemMouseCursors.click,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        const SizedBox(width: 8),
-                        TextButton(
-                          child: Text(
-                            'ACCEPT',
-                            style: TextStyle(
-                                color: Colors.green[400],
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onPressed: onAccept,
-                        ),
-                        const SizedBox(width: 8),
-                      ],
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.symmetric(
-                    vertical: 12.0, horizontal: 8.0)),
-          ])),
-    );
-  }
-}
-
-class RespondRequestDonor extends StatefulWidget {
-  const RespondRequestDonor({Key? key}) : super(key: key);
+class RespondRequestDonorPage extends StatefulWidget {
+  const RespondRequestDonorPage({Key? key}) : super(key: key);
   @override
   _RespondRequestDonorState createState() => _RespondRequestDonorState();
 }
 
-class _RespondRequestDonorState extends State<RespondRequestDonor> {
-  List<dynamic> donors = [];
+class _RespondRequestDonorState extends State<RespondRequestDonorPage> {
+  List<dynamic> requestDonor = [];
 
   @override
   void initState() {
@@ -90,17 +28,10 @@ class _RespondRequestDonorState extends State<RespondRequestDonor> {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
       request
-          .get("http://localhost:8000/dashboard-donor/api/donor")
+          .get("http://localhost:8000/dashboard-donor/api/request")
           .then((item) {
-        List<dynamic> parsedList = item;
-        Map<dynamic, dynamic> chosenFound = parsedList
-            .firstWhere((item) => item['chosen'] == true, orElse: () => {});
         setState(() {
-          if (chosenFound.isEmpty) {
-            donors = item;
-          } else {
-            donors = [chosenFound];
-          }
+          requestDonor = item;
         });
       });
     });
@@ -108,24 +39,10 @@ class _RespondRequestDonorState extends State<RespondRequestDonor> {
 
   @override
   Widget build(BuildContext context) {
-    Iterable<DonorCard> donorComponents = donors.map((item) {
-      Map<String, dynamic> donorData = jsonDecode(item['donor_data'])[0];
-      return DonorCard(
-          title: donorData['fields']['nama'],
-          subtitle: "Golongan Darah: " +
-              donorData['fields']['golongan_darah'] +
-              donorData['fields']['rhesus'],
-          onAccept: () {
-            final request = Provider.of<CookieRequest>(context, listen: false);
-            request.post("http://localhost:8000/dashboard-donor/api/donor",
-                {"id": item["pk"].toString()});
-          });
-    });
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text('Request Details'),
+          title: const Text('Request Pendonor'),
           backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
           actions: <Widget>[
             IconButton(
@@ -138,6 +55,16 @@ class _RespondRequestDonorState extends State<RespondRequestDonor> {
                         builder: (context) => const Notifications()));
               },
             ),
+            IconButton(
+                icon: const Icon(Icons.help_outline),
+                tooltip: 'Support',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RequestDonorReport()),
+                  );
+                })
           ],
         ),
         body: Center(
@@ -161,53 +88,46 @@ class _RespondRequestDonorState extends State<RespondRequestDonor> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               const PageHeader(
-                  title: "Request Details",
-                  subtitle: "Click one of the requests to accept it."),
-              ...donors.map((item) {
-                Map<String, dynamic> donorData =
-                    jsonDecode(item['donor_data'])[0];
-                if (!item['chosen']) {
-                  return DonorCard(
-                    title: donorData['fields']['nama'],
-                    subtitle: "Golongan Darah: " +
-                        donorData['fields']['golongan_darah'] +
-                        donorData['fields']['rhesus'],
-                    onAccept: () {
-                      final request =
-                          Provider.of<CookieRequest>(context, listen: false);
-                      request.post(
-                          "http://localhost:8000/dashboard-donor/api/donor",
-                          {"id": item["pk"].toString()}).then((item) {
-                        if (item["status"] == "success") {
-                          request
-                              .get(
-                                  "http://localhost:8000/dashboard-donor/api/donor")
-                              .then((item) {
-                            List<dynamic> parsedList = item;
-                            Map<dynamic, dynamic> chosenFound = parsedList
-                                .firstWhere((item) => item['chosen'] == true,
-                                    orElse: () => {});
-                            setState(() {
-                              if (chosenFound.isEmpty) {
-                                donors = item;
-                              } else {
-                                donors = [chosenFound];
-                              }
-                            });
-                          });
-                        }
-                      });
-                    },
-                  );
-                }
-                return MenuItem(
-                    title: donorData['fields']['nama'],
-                    subtitle: "Golongan Darah: " +
-                        donorData['fields']['golongan_darah'] +
-                        donorData['fields']['rhesus'] +
-                        "\nAccepted as Donor",
-                    onClick: () {});
-              })
+                  title: "Request Pendonor",
+                  subtitle: "Select one of the actions below."),
+              requestDonor.isEmpty
+                  ? MenuItem(
+                      icon: const Icon(Icons.bloodtype_outlined, size: 32.0),
+                      title: "Create Donation Request",
+                      subtitle:
+                          "You have not created a Donation Request, click here to create one.",
+                      onClick: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const FormDonorScreen();
+                        }));
+                      })
+                  : Column(children: [
+                      MenuItem(
+                          icon:
+                              const Icon(Icons.bloodtype_outlined, size: 32.0),
+                          title: "View Donation Request",
+                          subtitle:
+                              "Click here to view your Donation Request details.",
+                          onClick: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RequestDonorDetails()));
+                          }),
+                      MenuItem(
+                          icon: const Icon(Icons.bloodtype, size: 32.0),
+                          title: "View Potential Donors",
+                          subtitle: "Click here to view Potential Donors.",
+                          onClick: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RequestDonorPotential()));
+                          }),
+                    ])
             ],
           ),
         ));
