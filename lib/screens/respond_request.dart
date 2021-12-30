@@ -7,8 +7,8 @@ import 'package:tk2_pbp/helpers/authenticated_request.dart';
 import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/components/page_header.dart';
 
-import 'package:tk2_pbp/screens/request_donor_details.dart';
-import 'package:tk2_pbp/screens/request_donor_potential.dart';
+import 'package:tk2_pbp/screens/request_pencari_donor_details.dart';
+import 'package:tk2_pbp/screens/request_pencari_donor_potential.dart';
 import 'package:tk2_pbp/screens/notifications.dart';
 
 class ResponRequestDonor extends StatefulWidget {

@@ -30,11 +30,9 @@ class _AccountAuthedScreenState extends State<AccountAuthedScreen> {
             width: double.infinity,
             child: TextButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    const Color.fromRGBO(204, 23, 40, 1)),
+                backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(204, 23, 40, 1)),
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
+                overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
                   if (states.contains(MaterialState.pressed)) {
                     return const Color.fromRGBO(255, 0, 0, 1);
                   }
@@ -53,11 +51,9 @@ class _AccountAuthedScreenState extends State<AccountAuthedScreen> {
             width: double.infinity,
             child: TextButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    const Color.fromRGBO(204, 23, 40, 1)),
+                backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(204, 23, 40, 1)),
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
+                overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
                   if (states.contains(MaterialState.pressed)) {
                     return const Color.fromRGBO(255, 0, 0, 1);
                   }
@@ -66,8 +62,7 @@ class _AccountAuthedScreenState extends State<AccountAuthedScreen> {
               ),
               child: const Text("Test Auth"),
               onPressed: () async {
-                final response =
-                    await request.post("http://localhost:8000/test", {
+                final response = await request.post("http://localhost:8000/test", {
                   "test": "blebloblu",
                 });
                 showDialog(

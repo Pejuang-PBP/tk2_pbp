@@ -4,7 +4,7 @@ import 'package:tk2_pbp/screens/form_pencari_donor.dart';
 class FormPencariDonorScreen extends StatefulWidget {
   static const routeName = '/form_pencari_donor';
 
-  const FormPencariDonorScreen({ Key? key }) : super(key: key);
+  const FormPencariDonorScreen({Key? key}) : super(key: key);
 
   @override
   _FormPencariDonorScreenState createState() => _FormPencariDonorScreenState();
@@ -17,11 +17,15 @@ class _FormPencariDonorScreenState extends State<FormPencariDonorScreen> {
       appBar: AppBar(
         title: Text("Form Pencari Donor"),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white,),
-          onPressed: (){
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
             Navigator.of(context).pop(true);
           },
         ),
+        backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -40,7 +44,6 @@ class _FormPencariDonorScreenState extends State<FormPencariDonorScreen> {
           ],
         ),
       ),
-      
     );
   }
 }

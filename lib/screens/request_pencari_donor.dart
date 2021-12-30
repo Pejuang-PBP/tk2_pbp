@@ -7,9 +7,11 @@ import 'package:tk2_pbp/helpers/authenticated_request.dart';
 import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/components/page_header.dart';
 
-import 'package:tk2_pbp/screens/request_donor_details.dart';
-import 'package:tk2_pbp/screens/request_donor_potential.dart';
+import 'package:tk2_pbp/screens/request_pencari_donor_details.dart';
+import 'package:tk2_pbp/screens/request_pencari_donor_potential.dart';
 import 'package:tk2_pbp/screens/notifications.dart';
+import 'package:tk2_pbp/screens/request_pencari_donor_report.dart';
+import 'package:tk2_pbp/screens/form_pencari_donor_screen.dart';
 
 class RequestDonorPage extends StatefulWidget {
   const RequestDonorPage({Key? key}) : super(key: key);
@@ -25,9 +27,7 @@ class _RequestDonorState extends State<RequestDonorPage> {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
-      request
-          .get("http://localhost:8000/dashboard-pencari/api/request")
-          .then((item) {
+      request.get("http://localhost:8000/dashboard-pencari/api/request").then((item) {
         setState(() {
           requestDonor = item;
         });
@@ -40,19 +40,25 @@ class _RequestDonorState extends State<RequestDonorPage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text('Request Donor'),
+          title: const Text('Request Pencari Donor'),
           backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.add_alert),
               tooltip: 'Notification',
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Notifications()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const Notifications()));
               },
             ),
+            IconButton(
+                icon: const Icon(Icons.help_outline),
+                tooltip: 'Support',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RequestDonorReport()),
+                  );
+                })
           ],
         ),
         body: Center(
@@ -75,40 +81,31 @@ class _RequestDonorState extends State<RequestDonorPage> {
             // horizontal).
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const PageHeader(
-                  title: "Request Donor",
-                  subtitle: "Select one of the actions below."),
+              const PageHeader(title: "Request Pencari Donor", subtitle: "Select one of the actions below."),
               requestDonor.isEmpty
                   ? MenuItem(
                       icon: const Icon(Icons.bloodtype_outlined, size: 32.0),
                       title: "Create Donation Request",
-                      subtitle:
-                          "You have not created a Donation Request, click here to create one.",
-                      onClick: () {})
+                      subtitle: "You have not created a Donation Request, click here to create one.",
+                      onClick: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return const FormPencariDonorScreen();
+                        }));
+                      })
                   : Column(children: [
                       MenuItem(
-                          icon:
-                              const Icon(Icons.bloodtype_outlined, size: 32.0),
+                          icon: const Icon(Icons.bloodtype_outlined, size: 32.0),
                           title: "View Donation Request",
-                          subtitle:
-                              "Click here to view your Donation Request details.",
+                          subtitle: "Click here to view your Donation Request details.",
                           onClick: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RequestDonorDetails()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const RequestDonorDetails()));
                           }),
                       MenuItem(
                           icon: const Icon(Icons.bloodtype, size: 32.0),
                           title: "View Potential Donors",
                           subtitle: "Click here to view Potential Donors.",
                           onClick: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RequestDonorPotential()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const RequestDonorPotential()));
                           }),
                     ])
             ],
