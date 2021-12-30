@@ -8,6 +8,7 @@ import 'package:tk2_pbp/screens/request_donor.dart';
 
 import 'package:tk2_pbp/pages/profile.dart';
 import 'package:tk2_pbp/pages/dashboard.dart';
+import 'package:tk2_pbp/pages/faq.dart';
 
 import 'package:tk2_pbp/screens/home_screen.dart';
 import 'package:tk2_pbp/screens/account_screen.dart';
@@ -139,6 +140,22 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        //label: Text('Action'),
+        onPressed: () {
+          // Add your onPressed code here!
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FAQ(),
+            ));
+        },
+        backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
+        highlightElevation: 50,
+        tooltip: 'FAQ',
+        child: const Icon(Icons.help_outlined),
+
+      ),
       appBar: AppBar(
         title: Row(children: [
           Container(
