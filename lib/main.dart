@@ -11,6 +11,7 @@ import 'package:tk2_pbp/screens/respond_request.dart';
 import 'package:tk2_pbp/pages/profile.dart';
 import 'package:tk2_pbp/pages/dashboard.dart';
 import 'package:tk2_pbp/pages/faq.dart';
+import 'package:tk2_pbp/pages/lokasiUTD.dart';
 
 import 'package:tk2_pbp/screens/home_screen.dart';
 import 'package:tk2_pbp/screens/account_screen.dart';
@@ -75,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Page components
     _pages = <Widget>[
       const HomeScreen(),
+      const lokasiUtd(),
       const Dashboard(),
       const AccountScreen(),
       //       Dashboard(updatePage: (int x) {
@@ -110,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
     request.init(context);
 
     if (request.loggedIn) {
-      _pages[2] = const Profile();
+      _pages[3] = const Profile();
     }
 
     List<BottomNavigationBarItem> menuItems = const [
@@ -122,6 +124,15 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Icon(Icons.home),
             padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
         label: 'Home',
+      ),
+      BottomNavigationBarItem(
+        icon: Padding(
+            child: Icon(Icons.location_city_outlined),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        activeIcon: Padding(
+            child: Icon(Icons.location_city),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        label: 'Location',
       ),
       BottomNavigationBarItem(
         icon: Padding(
