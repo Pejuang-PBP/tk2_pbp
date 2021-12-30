@@ -247,7 +247,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onPressed: () async {
                             if (_registerFormKey.currentState!.validate()) {
                               final response = await request.post(
-                                  "http://10.0.2.2:8000/auth/signup",
+                                  "https://tk1-pbp.herokuapp.com/auth/signup",
+                                  // "http://10.0.2.2:8000/auth/signup",
                                   // "http://localhost:8000/auth/signup",
                                   jsonEncode(<String, String>{
                                     'email': email,
@@ -258,7 +259,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                               if (response["status"] == true) {
                                 await request
-                                    .login("http://10.0.2.2:8000/auth/login", {
+                                    .login("https://tk1-pbp.herokuapp.com/auth/login", {
+                                    // .login("http://10.0.2.2:8000/auth/login", {
                                   // .login("http://localhost:8000/auth/login", {
                                   'username': username,
                                   'password': password1,
