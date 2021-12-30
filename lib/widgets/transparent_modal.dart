@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TransparentModalScreen extends StatelessWidget {
-  const TransparentModalScreen({Key? key, required this.header, required this.desc}) : super(key: key);
+  const TransparentModalScreen(
+      {Key? key, required this.header, required this.desc})
+      : super(key: key);
 
   final String header;
   final String desc;

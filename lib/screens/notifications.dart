@@ -22,7 +22,10 @@ class _NotificationState extends State<Notifications> {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       setState(() {
         request = Provider.of<CookieRequest>(context, listen: false);
-        request.get("http://localhost:8000/dashboard-pencari/api/notifications").then((res) {
+        request
+            .get(
+                "https://tk1-pbp.herokuapp.com/dashboard-pencari/api/notifications")
+            .then((res) {
           setState(() {
             notifications = res;
           });
@@ -58,10 +61,15 @@ class _NotificationState extends State<Notifications> {
             // axis because Columns are vertical (the cross axis would be
             // horizontal).
             children: <Widget>[
-              const PageHeader(title: "Your Notifications", subtitle: "Here are your latest notifications."),
+              const PageHeader(
+                  title: "Your Notifications",
+                  subtitle: "Here are your latest notifications."),
               ...notifications.map((item) {
                 if (notifications.isNotEmpty) {
-                  return MenuItem(title: item['fields']['title'], subtitle: item['fields']['message'], onClick: () {});
+                  return MenuItem(
+                      title: item['fields']['title'],
+                      subtitle: item['fields']['message'],
+                      onClick: () {});
                 } else {
                   return const Text("EMPTY");
                 }

@@ -57,11 +57,14 @@ class ProfileState extends State<Profile> {
         // horizontal).
         children: <Widget>[
           Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 0, horizontal: 12.0),
               child: Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
                   elevation: 2.5,
-                  child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  child:
+                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                     Padding(
                         child: Column(children: [
                           Container(
@@ -72,26 +75,39 @@ class ProfileState extends State<Profile> {
                           Container(
                               child: Text(
                                 request.username ?? "",
-                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w500),
                               ),
                               margin: const EdgeInsets.fromLTRB(0, 0, 0, 4.0)),
-                          Text("Regular User", style: TextStyle(fontSize: 16, color: Colors.grey[500]))
+                          Text("Regular User",
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.grey[500]))
                         ]),
-                        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0))
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20.0, horizontal: 20.0))
                   ]))),
           Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 0, horizontal: 12.0),
               child: Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
                   elevation: 2.5,
-                  child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  child:
+                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                     Padding(
-                        child: Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: const [
-                          ProfileStatistic(title: "Times Donated", number: "20"),
-                          SizedBox(width: 30),
-                          ProfileStatistic(number: "4", title: "Requests Made"),
-                        ]),
-                        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0))
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: const [
+                              ProfileStatistic(
+                                  title: "Times Donated", number: "20"),
+                              SizedBox(width: 30),
+                              ProfileStatistic(
+                                  number: "4", title: "Requests Made"),
+                            ]),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20.0, horizontal: 20.0))
                   ]))),
           MenuItem(
             title: "Logout",
@@ -121,14 +137,18 @@ class ProfileStatistic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
-      Text(number, style: TextStyle(fontSize: 21, color: Colors.grey[500])),
-      Container(
-          child: Text(
-            title,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          ),
-          margin: const EdgeInsets.fromLTRB(0, 0, 0, 4.0)),
-    ]);
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(number, style: TextStyle(fontSize: 21, color: Colors.grey[500])),
+          Container(
+              child: Text(
+                title,
+                style:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              ),
+              margin: const EdgeInsets.fromLTRB(0, 0, 0, 4.0)),
+        ]);
   }
 }

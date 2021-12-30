@@ -4,7 +4,8 @@ class RecipientBar extends StatefulWidget {
   final int recipientCount;
   final int userCount;
 
-  const RecipientBar({Key? key, this.recipientCount = 0, this.userCount = 0}) : super(key: key);
+  const RecipientBar({Key? key, this.recipientCount = 0, this.userCount = 0})
+      : super(key: key);
 
   @override
   _RecipientBarState createState() => _RecipientBarState();

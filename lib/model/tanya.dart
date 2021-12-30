@@ -12,7 +12,7 @@ class Tanya {
   }
 
   Map<String, dynamic> toJson() => {
-    'pertanyaan' : pertanyaan,
-    'jawaban': jawaban,
-  };
+        'pertanyaan': pertanyaan,
+        'jawaban': jawaban,
+      };
 }

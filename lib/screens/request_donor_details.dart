@@ -23,7 +23,7 @@ class _RequestDonorDetailsState extends State<RequestDonorDetails> {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
       request
-          .get("http://localhost:8000/dashboard-donor/api/request")
+          .get("https://tk1-pbp.herokuapp.com/dashboard-donor/api/request")
           .then((item) {
         setState(() {
           requestDonor = item;

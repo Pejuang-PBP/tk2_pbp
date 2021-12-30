@@ -27,7 +27,11 @@ class Carousel extends StatelessWidget {
         items: carouselData.map<Widget>((item) {
           return InkWell(
             onTap: () {
-              Navigator.of(context).push(PageRouteBuilder(opaque: false, pageBuilder: (BuildContext context, _, __) => TransparentModalScreen(header: item["header"]!, desc: item["desc"]!)));
+              Navigator.of(context).push(PageRouteBuilder(
+                  opaque: false,
+                  pageBuilder: (BuildContext context, _, __) =>
+                      TransparentModalScreen(
+                          header: item["header"]!, desc: item["desc"]!)));
             },
             child: Container(
               margin: const EdgeInsets.all(5),

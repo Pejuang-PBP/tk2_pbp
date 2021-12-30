@@ -4,7 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:tk2_pbp/styles/styles.dart';
 
 class MenuItem extends StatelessWidget {
-  const MenuItem({Key? key, this.icon, required this.title, required this.subtitle, required this.onClick}) : super(key: key);
+  const MenuItem(
+      {Key? key,
+      this.icon,
+      required this.title,
+      required this.subtitle,
+      required this.onClick})
+      : super(key: key);
   final Icon? icon;
   final String title;
   final String subtitle;
@@ -37,7 +43,8 @@ class MenuItem extends StatelessWidget {
                     ),
                     mouseCursor: SystemMouseCursors.click,
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0))
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 8.0))
             ])),
       ),
     );

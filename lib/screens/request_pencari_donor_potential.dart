@@ -57,7 +57,9 @@ class DonorCard extends StatelessWidget {
                         TextButton(
                           child: Text(
                             'ACCEPT',
-                            style: TextStyle(color: Colors.green[400], fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.green[400],
+                                fontWeight: FontWeight.bold),
                           ),
                           onPressed: onAccept,
                         ),
@@ -66,7 +68,8 @@ class DonorCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0)),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 12.0, horizontal: 8.0)),
           ])),
     );
   }
@@ -86,9 +89,12 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
-      request.get("http://localhost:8000/dashboard-pencari/api/donor").then((item) {
+      request
+          .get("https://tk1-pbp.herokuapp.com/dashboard-pencari/api/donor")
+          .then((item) {
         List<dynamic> parsedList = item;
-        Map<dynamic, dynamic> chosenFound = parsedList.firstWhere((item) => item['chosen'] == true, orElse: () => {});
+        Map<dynamic, dynamic> chosenFound = parsedList
+            .firstWhere((item) => item['chosen'] == true, orElse: () => {});
         setState(() {
           if (chosenFound.isEmpty) {
             donors = item;
@@ -106,10 +112,14 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
       Map<String, dynamic> donorData = jsonDecode(item['donor_data'])[0];
       return DonorCard(
           title: donorData['fields']['nama'],
-          subtitle: "Golongan Darah: " + donorData['fields']['golongan_darah'] + donorData['fields']['rhesus'],
+          subtitle: "Golongan Darah: " +
+              donorData['fields']['golongan_darah'] +
+              donorData['fields']['rhesus'],
           onAccept: () {
             final request = Provider.of<CookieRequest>(context, listen: false);
-            request.post("http://localhost:8000/dashboard-pencari/api/donor", {"id": item["pk"].toString()});
+            request.post(
+                "https://tk1-pbp.herokuapp.com/dashboard-pencari/api/donor",
+                {"id": item["pk"].toString()});
           });
     });
 
@@ -123,7 +133,10 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
               icon: const Icon(Icons.add_alert),
               tooltip: 'Notification',
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const Notifications()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Notifications()));
               },
             ),
           ],
@@ -148,20 +161,33 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
             // horizontal).
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const PageHeader(title: "Request Details", subtitle: "Click one of the requests to accept it."),
+              const PageHeader(
+                  title: "Request Details",
+                  subtitle: "Click one of the requests to accept it."),
               ...donors.map((item) {
-                Map<String, dynamic> donorData = jsonDecode(item['donor_data'])[0];
+                Map<String, dynamic> donorData =
+                    jsonDecode(item['donor_data'])[0];
                 if (!item['chosen']) {
                   return DonorCard(
                     title: donorData['fields']['nama'],
-                    subtitle: "Golongan Darah: " + donorData['fields']['golongan_darah'] + donorData['fields']['rhesus'],
+                    subtitle: "Golongan Darah: " +
+                        donorData['fields']['golongan_darah'] +
+                        donorData['fields']['rhesus'],
                     onAccept: () {
-                      final request = Provider.of<CookieRequest>(context, listen: false);
-                      request.post("http://localhost:8000/dashboard-pencari/api/donor", {"id": item["pk"].toString()}).then((item) {
+                      final request =
+                          Provider.of<CookieRequest>(context, listen: false);
+                      request.post(
+                          "https://tk1-pbp.herokuapp.com/dashboard-pencari/api/donor",
+                          {"id": item["pk"].toString()}).then((item) {
                         if (item["status"] == "success") {
-                          request.get("http://localhost:8000/dashboard-pencari/api/donor").then((item) {
+                          request
+                              .get(
+                                  "https://tk1-pbp.herokuapp.com/dashboard-pencari/api/donor")
+                              .then((item) {
                             List<dynamic> parsedList = item;
-                            Map<dynamic, dynamic> chosenFound = parsedList.firstWhere((item) => item['chosen'] == true, orElse: () => {});
+                            Map<dynamic, dynamic> chosenFound = parsedList
+                                .firstWhere((item) => item['chosen'] == true,
+                                    orElse: () => {});
                             setState(() {
                               if (chosenFound.isEmpty) {
                                 donors = item;
@@ -175,7 +201,13 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
                     },
                   );
                 }
-                return MenuItem(title: donorData['fields']['nama'], subtitle: "Golongan Darah: " + donorData['fields']['golongan_darah'] + donorData['fields']['rhesus'] + "\nAccepted as Donor", onClick: () {});
+                return MenuItem(
+                    title: donorData['fields']['nama'],
+                    subtitle: "Golongan Darah: " +
+                        donorData['fields']['golongan_darah'] +
+                        donorData['fields']['rhesus'] +
+                        "\nAccepted as Donor",
+                    onClick: () {});
               })
             ],
           ),

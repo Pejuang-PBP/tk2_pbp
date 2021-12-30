@@ -27,7 +27,7 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
       request
-          .get("http://localhost:8000/dashboard-pencari/api/report")
+          .get("https://tk1-pbp.herokuapp.com/dashboard-pencari/api/report")
           .then((item) {
         setState(() {
           notifications = item;

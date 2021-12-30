@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:tk2_pbp/screens/donor_notifications.dart';
 
 import 'package:tk2_pbp/styles/styles.dart';
-import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
 import 'package:tk2_pbp/components/page_header.dart';
 
@@ -90,7 +89,7 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
       request
-          .get("http://localhost:8000/dashboard-donor/api/donor")
+          .get("https://tk1-pbp.herokuapp.com/dashboard-donor/api/donor")
           .then((item) {
         List<dynamic> parsedList = item;
         setState(() {
@@ -111,7 +110,8 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
               donorData['rhesus'],
           onAccept: () {
             final request = Provider.of<CookieRequest>(context, listen: false);
-            request.post("http://localhost:8000/dashboard-donor/api/donor",
+            request.post(
+                "https://tk1-pbp.herokuapp.com/dashboard-donor/api/donor",
                 {"id": item["pk"].toString()});
           });
     });

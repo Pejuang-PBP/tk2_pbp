@@ -30,8 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> fetchCountData() async {
-    final response = await http.get(Uri.parse("http://localhost:8000/api/counts"));
-    // get(Uri.parse("http://localhost:8000/api/counts"));
+    final response =
+        await http.get(Uri.parse("https://tk1-pbp.herokuapp.com/api/counts"));
+    // get(Uri.parse("https://tk1-pbp.herokuapp.com/api/counts"));
 
     if (mounted && response.statusCode == 200) {
       setState(() {
@@ -44,25 +45,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> fetchSlides() async {
-    final response = await http.get(Uri.parse("http://localhost:8000/api/slides"));
-    // get(Uri.parse("http://localhost:8000/api/slides"));
+    final response =
+        await http.get(Uri.parse("https://tk1-pbp.herokuapp.com/api/slides"));
+    // get(Uri.parse("https://tk1-pbp.herokuapp.com/api/slides"));
 
     if (mounted) {
       if (response.statusCode == 200) {
-      setState(() {
-        List<dynamic> mapList = jsonDecode(response.body)["data"];
-        for (var e in mapList) {
-          carouselData.add(Map<String, String>.from(e));
-        }
-        if (carouselData.isEmpty) {
+        setState(() {
+          List<dynamic> mapList = jsonDecode(response.body)["data"];
+          for (var e in mapList) {
+            carouselData.add(Map<String, String>.from(e));
+          }
+          if (carouselData.isEmpty) {
+            carouselData.add({"header": "No data", "desc": "No data"});
+          }
+        });
+      } else {
+        setState(() {
           carouselData.add({"header": "No data", "desc": "No data"});
-        }
-      });
-    } else {
-      setState(() {
-        carouselData.add({"header": "No data", "desc": "No data"});
-      });
-    }
+        });
+      }
     }
   }
 
