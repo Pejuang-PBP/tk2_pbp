@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -61,19 +63,18 @@ class FAQState extends State<FAQ> {
         //     title: Text("KonvaSearch")
         // ),
         appBar: AppBar(
-       //title: 'KonvaSearch',
-        title: Row(children: [
-          Container(
-              child: Image.asset(
-                "assets/images/logo.png",
-                width: 36.0,
-                height: 36.0,
-              ),
-              margin: const EdgeInsets.fromLTRB(0, 0, 4.0, 0)),
-          Text("KonvaSearch",
-            style: const TextStyle(fontWeight: FontWeight.w600)),
-        ]),
-        backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
+          //title: 'KonvaSearch',
+          title: Row(children: [
+            Container(
+                child: Image.asset(
+                  "assets/images/logo.png",
+                  width: 36.0,
+                  height: 36.0,
+                ),
+                margin: const EdgeInsets.fromLTRB(0, 0, 4.0, 0)),
+            Text("KonvaSearch", style: const TextStyle(fontWeight: FontWeight.w600)),
+          ]),
+          backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
         ),
         // body: Center(
         //   child: RaisedButton(

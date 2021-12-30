@@ -73,13 +73,15 @@ class DashboardState extends State<Dashboard> {
               title: "Donor Request",
               subtitle: "Create a donation request.",
               onClick: () {
-                Navigator.pushNamed(context, "/request-donor");
+                Navigator.pushNamed(context, "/request-pencari-donor");
               }),
           MenuItem(
               icon: const Icon(Icons.bloodtype, size: 32.0),
               title: "Respond to a Request",
               subtitle: "Respond to a donation request.",
-              onClick: () {}),
+              onClick: () {
+                Navigator.pushNamed(context, "/respond-request");
+              }),
         ],
       ),
     );
