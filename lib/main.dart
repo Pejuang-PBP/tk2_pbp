@@ -39,12 +39,7 @@ class MyApp extends StatelessWidget {
             ),
             // home: const MyHomePage(title: 'KonvaSearch'),
             initialRoute: '/',
-            routes: {
-              '/': (ctx) => const MyHomePage(title: 'KonvaSearch'),
-              LoginScreen.routeName: (ctx) => const LoginScreen(),
-              RegisterScreen.routeName: (ctx) => const RegisterScreen(),
-              '/request-donor': (ctx) => const RequestDonorPage()
-            }));
+            routes: {'/': (ctx) => const MyHomePage(title: 'KonvaSearch'), LoginScreen.routeName: (ctx) => const LoginScreen(), RegisterScreen.routeName: (ctx) => const RegisterScreen(), '/request-donor': (ctx) => const RequestDonorPage()}));
   }
 }
 
@@ -112,31 +107,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
     List<BottomNavigationBarItem> menuItems = const [
       BottomNavigationBarItem(
-        icon: Padding(
-            child: Icon(Icons.home_outlined),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
-        activeIcon: Padding(
-            child: Icon(Icons.home),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        icon: Padding(child: Icon(Icons.home_outlined), padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        activeIcon: Padding(child: Icon(Icons.home), padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
         label: 'Home',
       ),
       BottomNavigationBarItem(
-        icon: Padding(
-            child: Icon(Icons.dashboard_outlined),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
-        activeIcon: Padding(
-            child: Icon(Icons.dashboard),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        icon: Padding(child: Icon(Icons.dashboard_outlined), padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        activeIcon: Padding(child: Icon(Icons.dashboard), padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
         label: 'Dashboard',
       ),
-      BottomNavigationBarItem(
-          icon: Padding(
-              child: Icon(Icons.person_outline),
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
-          activeIcon: Padding(
-              child: Icon(Icons.person),
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
-          label: 'Profile')
+      BottomNavigationBarItem(icon: Padding(child: Icon(Icons.person_outline), padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)), activeIcon: Padding(child: Icon(Icons.person), padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)), label: 'Profile')
     ];
 
     return Scaffold(
@@ -145,16 +125,15 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           // Add your onPressed code here!
           Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FAQ(),
-            ));
+              context,
+              MaterialPageRoute(
+                builder: (context) => FAQ(),
+              ));
         },
         backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
         highlightElevation: 50,
         tooltip: 'FAQ',
         child: const Icon(Icons.help_outlined),
-
       ),
       appBar: AppBar(
         title: Row(children: [
@@ -165,8 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 36.0,
               ),
               margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0)),
-          Text(widget.title,
-              style: const TextStyle(fontWeight: FontWeight.w600)),
+          Text(widget.title, style: const TextStyle(fontWeight: FontWeight.w600)),
         ]),
         backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
       ),

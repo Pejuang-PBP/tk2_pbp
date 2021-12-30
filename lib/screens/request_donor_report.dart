@@ -25,9 +25,7 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
-      request
-          .get("http://localhost:8000/dashboard-pencari/api/report")
-          .then((item) {
+      request.get("http://localhost:8000/dashboard-pencari/api/report").then((item) {
         setState(() {
           notifications = item;
         });
@@ -47,10 +45,7 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
               icon: const Icon(Icons.add),
               tooltip: 'Create Support Ticket',
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Notifications()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const Notifications()));
               },
             ),
           ],
@@ -75,25 +70,16 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
             // horizontal).
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const PageHeader(
-                  title: "Support Center",
-                  subtitle:
-                      "If you have any problems, create a support ticket by pressing the button on the top right."),
+              const PageHeader(title: "Support Center", subtitle: "If you have any problems, create a support ticket by pressing the button on the top right."),
               if (notifications.isEmpty)
-                MenuItem(
-                    title: "You do not have any ongoing reports",
-                    subtitle:
-                        "Please create a report if you are having any issues.",
-                    onClick: () {})
+                MenuItem(title: "You do not have any ongoing reports", subtitle: "Please create a report if you are having any issues.", onClick: () {})
               else
                 ...notifications.map((item) {
                   return MenuItem(
                     title: item['title'],
-                    subtitle: "Replies: " +
-                        jsonDecode(item['replies']).length.toString(),
+                    subtitle: "Replies: " + jsonDecode(item['replies']).length.toString(),
                     onClick: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
                         return RequestDonorReportDetails(item: item);
                       }));
                     },

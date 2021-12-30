@@ -64,10 +64,7 @@ class DashboardState extends State<Dashboard> {
         // horizontal).
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          PageHeader(
-              title: "Welcome to your dashboard, $username.",
-              subtitle:
-                  "Select one of the actions below to begin your KonvaSearch journey"),
+          PageHeader(title: "Welcome to your dashboard, $username.", subtitle: "Select one of the actions below to begin your KonvaSearch journey"),
           MenuItem(
               icon: const Icon(Icons.bloodtype_outlined, size: 32.0),
               title: "Donor Request",
@@ -75,11 +72,7 @@ class DashboardState extends State<Dashboard> {
               onClick: () {
                 Navigator.pushNamed(context, "/request-donor");
               }),
-          MenuItem(
-              icon: const Icon(Icons.bloodtype, size: 32.0),
-              title: "Respond to a Request",
-              subtitle: "Respond to a donation request.",
-              onClick: () {}),
+          MenuItem(icon: const Icon(Icons.bloodtype, size: 32.0), title: "Respond to a Request", subtitle: "Respond to a donation request.", onClick: () {}),
         ],
       ),
     );

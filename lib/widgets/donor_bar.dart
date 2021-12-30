@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class DonorBar extends StatefulWidget {
   final int donorCount;
   final int userCount;
-  const DonorBar({Key? key, this.donorCount = 0, this.userCount = 0})
-      : super(key: key);
+  const DonorBar({Key? key, this.donorCount = 0, this.userCount = 0}) : super(key: key);
 
   @override
   _DonorBarState createState() => _DonorBarState();

@@ -54,8 +54,7 @@ class CookieRequest {
       c.withCredentials = true;
     }
 
-    http.Response response =
-        await _client.post(Uri.parse(url), body: data, headers: headers);
+    http.Response response = await _client.post(Uri.parse(url), body: data, headers: headers);
 
     _updateCookie(response);
 
@@ -75,8 +74,7 @@ class CookieRequest {
       dynamic c = _client;
       c.withCredentials = true;
     }
-    http.Response response =
-        await _client.get(Uri.parse(url), headers: headers);
+    http.Response response = await _client.get(Uri.parse(url), headers: headers);
     _updateCookie(response);
     return json.decode(response.body); // Expects and returns JSON request body
   }
@@ -86,8 +84,7 @@ class CookieRequest {
       dynamic c = _client;
       c.withCredentials = true;
     }
-    http.Response response =
-        await _client.post(Uri.parse(url), body: data, headers: headers);
+    http.Response response = await _client.post(Uri.parse(url), body: data, headers: headers);
     _updateCookie(response);
     return json.decode(response.body); // Expects and returns JSON request body
   }
