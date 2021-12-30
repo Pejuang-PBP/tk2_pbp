@@ -107,6 +107,8 @@ class FormDonorState extends State<FormDonor> {
                                     return "Wajib diisi";
                                 if(!RegExp(r'^[0-9]+$').hasMatch(value))
                                     return "Mohon masukkan angka";
+                                if(value.length>12)
+                                    return "Maksimal 12 digit angka";
                                 return null;
                             },
                         ),
@@ -334,7 +336,10 @@ class FormDonorState extends State<FormDonor> {
                                           content: Text('Request Anda telah berhasil dikirim.'),
                                           actions: <Widget>[
                                             TextButton(
-                                              onPressed: () => Navigator.popAndPushNamed(context, "/"),
+                                              onPressed: (){
+                                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                                    '/', (Route<dynamic> route) => false);
+                                              },
                                               child: Text('OK'),
                                             ),
                                           ],
