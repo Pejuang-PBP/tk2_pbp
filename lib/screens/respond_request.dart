@@ -7,17 +7,19 @@ import 'package:tk2_pbp/helpers/authenticated_request.dart';
 import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/components/page_header.dart';
 
-import 'package:tk2_pbp/screens/request_pencari_donor_details.dart';
-import 'package:tk2_pbp/screens/request_pencari_donor_potential.dart';
-import 'package:tk2_pbp/screens/notifications.dart';
+import 'package:tk2_pbp/screens/request_donor_details.dart';
+import 'package:tk2_pbp/screens/request_donor_potential.dart';
+import 'package:tk2_pbp/screens/donor_notifications.dart';
+import 'package:tk2_pbp/screens/request_donor_report.dart';
+import 'package:tk2_pbp/screens/form_donor_screen.dart';
 
-class RespondRequestDonor extends StatefulWidget {
-  const RespondRequestDonor({Key? key}) : super(key: key);
+class RespondRequestDonorPage extends StatefulWidget {
+  const RespondRequestDonorPage({Key? key}) : super(key: key);
   @override
   _RespondRequestDonorState createState() => _RespondRequestDonorState();
 }
 
-class _RespondRequestDonorState extends State<RespondRequestDonor> {
+class _RespondRequestDonorState extends State<RespondRequestDonorPage> {
   List<dynamic> requestDonor = [];
 
   @override
@@ -26,7 +28,7 @@ class _RespondRequestDonorState extends State<RespondRequestDonor> {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
       request
-          .get("http://localhost:8000/dashboard-pencari/api/request")
+          .get("http://localhost:8000/dashboard-donor/api/request")
           .then((item) {
         setState(() {
           requestDonor = item;
@@ -40,7 +42,7 @@ class _RespondRequestDonorState extends State<RespondRequestDonor> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text('Request Donor'),
+          title: const Text('Request Pendonor'),
           backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
           actions: <Widget>[
             IconButton(
@@ -53,6 +55,16 @@ class _RespondRequestDonorState extends State<RespondRequestDonor> {
                         builder: (context) => const Notifications()));
               },
             ),
+            IconButton(
+                icon: const Icon(Icons.help_outline),
+                tooltip: 'Support',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RequestDonorReport()),
+                  );
+                })
           ],
         ),
         body: Center(
@@ -76,15 +88,20 @@ class _RespondRequestDonorState extends State<RespondRequestDonor> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               const PageHeader(
-                  title: "Respond Request Donor",
-                  subtitle: "You can accept or decline a donor request."),
+                  title: "Request Pendonor",
+                  subtitle: "Select one of the actions below."),
               requestDonor.isEmpty
                   ? MenuItem(
                       icon: const Icon(Icons.bloodtype_outlined, size: 32.0),
                       title: "Create Donation Request",
                       subtitle:
                           "You have not created a Donation Request, click here to create one.",
-                      onClick: () {})
+                      onClick: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const FormDonorScreen();
+                        }));
+                      })
                   : Column(children: [
                       MenuItem(
                           icon:
