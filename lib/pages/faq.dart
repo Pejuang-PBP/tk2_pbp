@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:core';
+import 'dart:async';
+
+// import '../env.sample.dart';
+// import '../model/tanya.dart';
+
+import 'package:tk2_pbp/env.sample.dart';
+import 'package:tk2_pbp/model/tanya.dart';
+
+
 class FAQ extends StatefulWidget {
   const FAQ({Key? key}) : super(key: key);
   @override
@@ -11,6 +23,26 @@ class FAQ extends StatefulWidget {
 
 class FAQState extends State<FAQ> {
     final _formKey = GlobalKey<FormState>();
+
+    Future<List<Tanya>>? nanya;
+    final tanyaListKey = GlobalKey<FAQState>();
+
+    @override
+    void initState() {
+        super.initState();
+        nanya = getTanyaList();
+    }
+
+    Future<List<Tanya>> getTanyaList() async {
+        final response = await http.get(Uri.parse("${Env.URL_PREFIX}/tanya/tanyadetails?format=json"));
+        print(response.body);
+        final items = json.decode(response.body).cast<Map<String, dynamic>>();
+        List<Tanya> nanya = items.map<Tanya>((json) {
+        return Tanya.fromJson(json);
+        }).toList();
+
+        return nanya;
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +130,33 @@ class FAQState extends State<FAQ> {
                 collapsedIcon: Icon(Icons.add),
                 expandedIcon: Icon(Icons.minimize)
             ),
+            FutureBuilder<List<Tanya>>(
+            future: nanya,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+            // By default, show a loading spinner.
+            if (!snapshot.hasData) return CircularProgressIndicator();
+            // Render employee lists
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                var data = snapshot.data[index];
+                return GFAccordion(
+                    title: data.pertanyaan,
+                    content: data.jawaban,
+                    collapsedIcon: Icon(Icons.add),
+                    expandedIcon: Icon(Icons.minimize)
+                //   child: ListTile(
+                //     leading: Icon(Icons.person),
+                //     title: Text(
+                //       data.ename,
+                //       style: TextStyle(fontSize: 20),
+                //     ),
+                //   ),
+                );
+              },
+            );
+          },
+        ),
             SizedBox(
                 height: 50,
             ),
