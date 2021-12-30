@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:tk2_pbp/screens/notifications.dart';
 
 import 'package:tk2_pbp/styles/styles.dart';
 import 'package:tk2_pbp/components/menu_items.dart';
@@ -131,8 +132,10 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
               icon: const Icon(Icons.add_alert),
               tooltip: 'Notification',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is notifications')));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Notifications()));
               },
             ),
           ],
