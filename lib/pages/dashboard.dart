@@ -79,7 +79,9 @@ class DashboardState extends State<Dashboard> {
               icon: const Icon(Icons.bloodtype, size: 32.0),
               title: "Respond to a Request",
               subtitle: "Respond to a donation request.",
-              onClick: () {}),
+              onClick: () {
+                Navigator.pushNamed(context, "/respond-request");
+              }),
         ],
       ),
     );

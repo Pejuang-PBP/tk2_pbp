@@ -11,13 +11,13 @@ import 'package:tk2_pbp/screens/request_pencari_donor_details.dart';
 import 'package:tk2_pbp/screens/request_pencari_donor_potential.dart';
 import 'package:tk2_pbp/screens/notifications.dart';
 
-class ResponRequestDonor extends StatefulWidget {
-  const ResponRequestDonor({Key? key}) : super(key: key);
+class RespondRequestDonor extends StatefulWidget {
+  const RespondRequestDonor({Key? key}) : super(key: key);
   @override
-  _ResponRequestDonorState createState() => _ResponRequestDonorState();
+  _RespondRequestDonorState createState() => _RespondRequestDonorState();
 }
 
-class _ResponRequestDonorState extends State<ResponRequestDonor> {
+class _RespondRequestDonorState extends State<RespondRequestDonor> {
   List<dynamic> requestDonor = [];
 
   @override
