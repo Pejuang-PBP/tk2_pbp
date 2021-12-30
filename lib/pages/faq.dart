@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -27,6 +28,10 @@ class FAQState extends State<FAQ> {
     Future<List<Tanya>>? nanya;
     final tanyaListKey = GlobalKey<FAQState>();
 
+    final TextEditingController _controller = TextEditingController();
+    Future<Tanya>? _futureTanya;
+    List<Tanya> listTanya = [];
+
     @override
     void initState() {
         super.initState();
@@ -35,14 +40,18 @@ class FAQState extends State<FAQ> {
 
     Future<List<Tanya>> getTanyaList() async {
         final response = await http.get(Uri.parse("${Env.URL_PREFIX}/tanya/tanyadetails?format=json"));
-        print(response.body);
+        //print(response.body);
         final items = json.decode(response.body).cast<Map<String, dynamic>>();
         List<Tanya> nanya = items.map<Tanya>((json) {
         return Tanya.fromJson(json);
         }).toList();
-
+        items.forEach((pertanyaan){
+            listTanya.add(Tanya.fromJson(pertanyaan));
+        });
         return nanya;
     }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -94,42 +103,6 @@ class FAQState extends State<FAQ> {
             SizedBox(
                 height: 15,
             ),
-            GFAccordion(
-                title: 'GF Accordion 1',
-                content: 'GetFlutter is an open source library that comes with  pre-build 1000+ UI components.',
-                collapsedIcon: Icon(Icons.add),
-                expandedIcon: Icon(Icons.minimize)
-            ),
-            GFAccordion(
-                title: 'GF Accordion 2',
-                content: 'GetFlutter is an open source library that comes with  pre-build 1000+ UI components.',
-                collapsedIcon: Icon(Icons.add),
-                expandedIcon: Icon(Icons.minimize)
-            ),
-            GFAccordion(
-                title: 'GF Accordion 3',
-                content: 'GetFlutter is an open source library that comes with  pre-build 1000+ UI components.',
-                collapsedIcon: Icon(Icons.add),
-                expandedIcon: Icon(Icons.minimize)
-            ),
-            GFAccordion(
-                title: 'GF Accordion 4',
-                content: 'GetFlutter is an open source library that comes with  pre-build 1000+ UI components.',
-                collapsedIcon: Icon(Icons.add),
-                expandedIcon: Icon(Icons.minimize)
-            ),
-            GFAccordion(
-                title: 'GF Accordion 5',
-                content: 'GetFlutter is an open source library that comes with  pre-build 1000+ UI components.',
-                collapsedIcon: Icon(Icons.add),
-                expandedIcon: Icon(Icons.minimize)
-            ),
-            GFAccordion(
-                title: 'GF Accordion 6',
-                content: 'GetFlutter is an open source library that comes with  pre-build 1000+ UI components.',
-                collapsedIcon: Icon(Icons.add),
-                expandedIcon: Icon(Icons.minimize)
-            ),
             FutureBuilder<List<Tanya>>(
             future: nanya,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -137,6 +110,8 @@ class FAQState extends State<FAQ> {
             if (!snapshot.hasData) return CircularProgressIndicator();
             // Render employee lists
             return ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
                 var data = snapshot.data[index];
@@ -171,7 +146,7 @@ class FAQState extends State<FAQ> {
             Form(
       key: _formKey,
       child: Container(
-          padding: EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(20.0),      
       child: Column(
         //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -190,7 +165,7 @@ class FAQState extends State<FAQ> {
                 validator: (value) {
                 if (value == null || value.isEmpty) {
                     return 'Mohon isi nama';
-                }
+                } 
                 return null;
                 },
                 ),
@@ -206,11 +181,19 @@ class FAQState extends State<FAQ> {
                       borderRadius: new BorderRadius.circular(5.0)),
                 ),
             // The validator receives the text that the user has entered.
-
+                //bool pertanyaanAda = false;
                 validator: (value) {
                 if (value == null || value.isEmpty) {
                     return 'Tolong ajukan pertanyaan';
                 }
+
+                for(int i=0; i < listTanya.length; i++){
+                    //print(listTanya[i].pertanyaan);
+                    if(listTanya[i].pertanyaan == value){
+                        return 'Pertanyaan sudah pernah diajukan';
+                    }
+                }
+                
                 return null;
                 },
                 ),
@@ -224,9 +207,12 @@ class FAQState extends State<FAQ> {
                 if (_formKey.currentState!.validate()) {
                   // If the form is valid, display a snackbar. In the real world,
                   // you'd often call a server or save the information in a database.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
+                  //_formKey.currentState.save();
+                  _formKey.currentState!.save();
+                  showAlertDialog(context);
+                //   ScaffoldMessenger.of(context).showSnackBar(
+                //     const SnackBar(content: Text('Processing Data')),
+                //   );
                 }
               },
               child: const Text('Submit'),
@@ -241,4 +227,29 @@ class FAQState extends State<FAQ> {
         )
     );
   }
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () { 
+        Navigator.of(context).pop();
+    },
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Selamat!"),
+    content: Text("Pertanyaan anda berhasil diajukan!"),
+    actions: [
+      okButton,
+    ],
+  );
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
