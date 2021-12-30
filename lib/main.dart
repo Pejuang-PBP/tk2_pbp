@@ -6,6 +6,8 @@ import 'package:tk2_pbp/helpers/authenticated_request.dart';
 
 import 'package:tk2_pbp/screens/request_pencari_donor.dart';
 
+import 'package:tk2_pbp/screens/respond_request.dart';
+
 import 'package:tk2_pbp/pages/profile.dart';
 import 'package:tk2_pbp/pages/dashboard.dart';
 import 'package:tk2_pbp/pages/faq.dart';
@@ -39,7 +41,13 @@ class MyApp extends StatelessWidget {
             ),
             // home: const MyHomePage(title: 'KonvaSearch'),
             initialRoute: '/',
-            routes: {'/': (ctx) => const MyHomePage(title: 'KonvaSearch'), LoginScreen.routeName: (ctx) => const LoginScreen(), RegisterScreen.routeName: (ctx) => const RegisterScreen(), '/request-pencari-donor': (ctx) => const RequestDonorPage()}));
+            routes: {
+              '/': (ctx) => const MyHomePage(title: 'KonvaSearch'),
+              LoginScreen.routeName: (ctx) => const LoginScreen(),
+              RegisterScreen.routeName: (ctx) => const RegisterScreen(),
+              '/request-pencari-donor': (ctx) => const RequestDonorPage(),
+              '/respond-request': (ctx) => const RespondRequestDonor(),
+            }));
   }
 }
 
@@ -107,16 +115,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
     List<BottomNavigationBarItem> menuItems = const [
       BottomNavigationBarItem(
-        icon: Padding(child: Icon(Icons.home_outlined), padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
-        activeIcon: Padding(child: Icon(Icons.home), padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        icon: Padding(
+            child: Icon(Icons.home_outlined),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        activeIcon: Padding(
+            child: Icon(Icons.home),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
         label: 'Home',
       ),
       BottomNavigationBarItem(
-        icon: Padding(child: Icon(Icons.dashboard_outlined), padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
-        activeIcon: Padding(child: Icon(Icons.dashboard), padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        icon: Padding(
+            child: Icon(Icons.dashboard_outlined),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        activeIcon: Padding(
+            child: Icon(Icons.dashboard),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
         label: 'Dashboard',
       ),
-      BottomNavigationBarItem(icon: Padding(child: Icon(Icons.person_outline), padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)), activeIcon: Padding(child: Icon(Icons.person), padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)), label: 'Profile')
+      BottomNavigationBarItem(
+          icon: Padding(
+              child: Icon(Icons.person_outline),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+          activeIcon: Padding(
+              child: Icon(Icons.person),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+          label: 'Profile')
     ];
 
     return Scaffold(
@@ -144,7 +167,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 36.0,
               ),
               margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0)),
-          Text(widget.title, style: const TextStyle(fontWeight: FontWeight.w600)),
+          Text(widget.title,
+              style: const TextStyle(fontWeight: FontWeight.w600)),
         ]),
         backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
       ),
