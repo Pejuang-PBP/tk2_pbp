@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // await http.get(Uri.parse("http://10.0.2.2:8000/api/counts"));
         // await http.get(Uri.parse("http://localhost:8000/api/counts"));
 
-    if (response.statusCode == 200) {
+    if (mounted && response.statusCode == 200) {
       setState(() {
         Map<String, dynamic> jsonData = jsonDecode(response.body);
         countData["donor"] = jsonData["donor_count"]!;
@@ -51,7 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
         // await http.get(Uri.parse("http://10.0.2.2:8000/api/slides"));
         // await http.get(Uri.parse("http://localhost:8000/api/slides"));
 
-    if (response.statusCode == 200) {
+    if (mounted) {
+      if (response.statusCode == 200) {
       setState(() {
         List<dynamic> mapList = jsonDecode(response.body)["data"];
         for (var e in mapList) {
@@ -65,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         carouselData.add({"header": "No data", "desc": "No data"});
       });
+    }
     }
   }
 
