@@ -15,7 +15,7 @@ class _FormDonorScreenState extends State<FormDonorScreen> {
     Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text("Form Donor"),
+            title: const Text("Form Donor"),
             leading: IconButton(
                 icon: Icon(Icons.arrow_back,
                     color: Colors.white),
