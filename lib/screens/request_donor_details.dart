@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
 import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/components/page_header.dart';
+import 'package:tk2_pbp/screens/notifications.dart';
 
 class RequestDonorDetails extends StatefulWidget {
   const RequestDonorDetails({Key? key}) : super(key: key);
@@ -44,8 +45,10 @@ class _RequestDonorDetailsState extends State<RequestDonorDetails> {
               icon: const Icon(Icons.add_alert),
               tooltip: 'Notification',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is notifications')));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Notifications()));
               },
             ),
           ],
