@@ -191,7 +191,7 @@ class FAQState extends State<FAQ> {
                 for(int i=0; i < listTanya.length; i++){
                     //print(listTanya[i].pertanyaan);
                     if(listTanya[i].pertanyaan == value){
-                        return 'Pertanyaan sudah pernah diajukan';
+                        return 'Pertanyaan sudah tersedia';
                     }
                 }
                 
