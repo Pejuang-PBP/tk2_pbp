@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, avoid_print
+// ignore_for_file: unused_local_variable, avoid_print, unused_import
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -26,7 +26,9 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
-      request.get("http://localhost:8000/dashboard-pencari/api/report").then((item) {
+      request
+          .get("http://localhost:8000/dashboard-pencari/api/report")
+          .then((item) {
         setState(() {
           notifications = item;
         });
@@ -46,7 +48,10 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
               icon: const Icon(Icons.add),
               tooltip: 'Create Support Ticket',
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const RequestDonorReportForm()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RequestDonorReportForm()));
               },
             ),
           ],
@@ -54,7 +59,7 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
         body: Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
-          child: Column(
+          child: ListView(
             // Column is also a layout widget. It takes a list of children and
             // arranges them vertically. By default, it sizes itself to fit its
             // children horizontally, and tries to be as tall as its parent.
@@ -69,18 +74,26 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
             // center the children vertically; the main axis here is the vertical
             // axis because Columns are vertical (the cross axis would be
             // horizontal).
-            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const PageHeader(title: "Support Center", subtitle: "If you have any problems, create a support ticket by pressing the button on the top right."),
+              const PageHeader(
+                  title: "Support Center",
+                  subtitle:
+                      "If you have any problems, create a support ticket by pressing the button on the top right."),
               if (notifications.isEmpty)
-                MenuItem(title: "You do not have any ongoing reports", subtitle: "Please create a report if you are having any issues.", onClick: () {})
+                MenuItem(
+                    title: "You do not have any ongoing reports",
+                    subtitle:
+                        "Please create a report if you are having any issues.",
+                    onClick: () {})
               else
                 ...notifications.map((item) {
                   return MenuItem(
                     title: item['title'],
-                    subtitle: "Replies: " + jsonDecode(item['replies']).length.toString(),
+                    subtitle: "Replies: " +
+                        jsonDecode(item['replies']).length.toString(),
                     onClick: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
                         return RequestDonorReportDetails(item: item);
                       }));
                     },
