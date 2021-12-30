@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
 
-import 'package:tk2_pbp/screens/request_donor.dart';
+import 'package:tk2_pbp/screens/request_pencari_donor.dart';
 
 import 'package:tk2_pbp/pages/profile.dart';
 import 'package:tk2_pbp/pages/dashboard.dart';
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
             ),
             // home: const MyHomePage(title: 'KonvaSearch'),
             initialRoute: '/',
-            routes: {'/': (ctx) => const MyHomePage(title: 'KonvaSearch'), LoginScreen.routeName: (ctx) => const LoginScreen(), RegisterScreen.routeName: (ctx) => const RegisterScreen(), '/request-donor': (ctx) => const RequestDonorPage()}));
+            routes: {'/': (ctx) => const MyHomePage(title: 'KonvaSearch'), LoginScreen.routeName: (ctx) => const LoginScreen(), RegisterScreen.routeName: (ctx) => const RegisterScreen(), '/request-pencari-donor': (ctx) => const RequestDonorPage()}));
   }
 }
 

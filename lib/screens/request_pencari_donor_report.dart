@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:tk2_pbp/screens/notifications.dart';
-import 'package:tk2_pbp/screens/request_donor_report_details.dart';
+import 'package:tk2_pbp/screens/request_pencari_donor_report_details.dart';
+import 'package:tk2_pbp/screens/request_pencari_donor_report_form.dart';
 
 import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
@@ -45,7 +46,7 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
               icon: const Icon(Icons.add),
               tooltip: 'Create Support Ticket',
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const Notifications()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const RequestDonorReportForm()));
               },
             ),
           ],

@@ -7,10 +7,10 @@ import 'package:tk2_pbp/helpers/authenticated_request.dart';
 import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/components/page_header.dart';
 
-import 'package:tk2_pbp/screens/request_donor_details.dart';
-import 'package:tk2_pbp/screens/request_donor_potential.dart';
+import 'package:tk2_pbp/screens/request_pencari_donor_details.dart';
+import 'package:tk2_pbp/screens/request_pencari_donor_potential.dart';
 import 'package:tk2_pbp/screens/notifications.dart';
-import 'package:tk2_pbp/screens/request_donor_report.dart';
+import 'package:tk2_pbp/screens/request_pencari_donor_report.dart';
 import 'package:tk2_pbp/screens/form_pencari_donor_screen.dart';
 
 class RequestDonorPage extends StatefulWidget {
@@ -40,7 +40,7 @@ class _RequestDonorState extends State<RequestDonorPage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text('Request Donor'),
+          title: const Text('Request Pencari Donor'),
           backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
           actions: <Widget>[
             IconButton(
@@ -81,7 +81,7 @@ class _RequestDonorState extends State<RequestDonorPage> {
             // horizontal).
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const PageHeader(title: "Request Donor", subtitle: "Select one of the actions below."),
+              const PageHeader(title: "Request Pencari Donor", subtitle: "Select one of the actions below."),
               requestDonor.isEmpty
                   ? MenuItem(
                       icon: const Icon(Icons.bloodtype_outlined, size: 32.0),
