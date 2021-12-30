@@ -4,11 +4,14 @@ import 'package:provider/provider.dart';
 
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
 
-import 'package:tk2_pbp/screens/request_donor.dart';
+import 'package:tk2_pbp/screens/request_pencari_donor.dart';
+
+import 'package:tk2_pbp/screens/respond_request.dart';
 
 import 'package:tk2_pbp/pages/profile.dart';
 import 'package:tk2_pbp/pages/dashboard.dart';
 import 'package:tk2_pbp/pages/faq.dart';
+import 'package:tk2_pbp/pages/lokasiUTD.dart';
 
 import 'package:tk2_pbp/screens/home_screen.dart';
 import 'package:tk2_pbp/screens/account_screen.dart';
@@ -43,7 +46,8 @@ class MyApp extends StatelessWidget {
               '/': (ctx) => const MyHomePage(title: 'KonvaSearch'),
               LoginScreen.routeName: (ctx) => const LoginScreen(),
               RegisterScreen.routeName: (ctx) => const RegisterScreen(),
-              '/request-donor': (ctx) => const RequestDonorPage()
+              '/request-pencari-donor': (ctx) => const RequestDonorPage(),
+              '/respond-request': (ctx) => const RespondRequestDonor(),
             }));
   }
 }
@@ -72,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Page components
     _pages = <Widget>[
       const HomeScreen(),
+      const lokasiUtd(),
       const Dashboard(),
       const AccountScreen(),
       //       Dashboard(updatePage: (int x) {
@@ -107,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
     request.init(context);
 
     if (request.loggedIn) {
-      _pages[2] = const Profile();
+      _pages[3] = const Profile();
     }
 
     List<BottomNavigationBarItem> menuItems = const [
@@ -119,6 +124,15 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Icon(Icons.home),
             padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
         label: 'Home',
+      ),
+      BottomNavigationBarItem(
+        icon: Padding(
+            child: Icon(Icons.location_city_outlined),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        activeIcon: Padding(
+            child: Icon(Icons.location_city),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 2.0)),
+        label: 'Location',
       ),
       BottomNavigationBarItem(
         icon: Padding(
@@ -145,16 +159,15 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           // Add your onPressed code here!
           Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FAQ(),
-            ));
+              context,
+              MaterialPageRoute(
+                builder: (context) => FAQ(),
+              ));
         },
         backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
         highlightElevation: 50,
         tooltip: 'FAQ',
         child: const Icon(Icons.help_outlined),
-
       ),
       appBar: AppBar(
         title: Row(children: [

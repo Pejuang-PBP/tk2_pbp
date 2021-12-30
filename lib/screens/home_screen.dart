@@ -30,10 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> fetchCountData() async {
-    final response =
-        await http.get(Uri.parse("https://tk1-pbp.herokuapp.com/api/counts"));
-        // await http.get(Uri.parse("http://10.0.2.2:8000/api/counts"));
-        // await http.get(Uri.parse("http://localhost:8000/api/counts"));
+    final response = await http.get(Uri.parse("http://localhost:8000/api/counts"));
+    // get(Uri.parse("http://localhost:8000/api/counts"));
 
     if (mounted && response.statusCode == 200) {
       setState(() {
@@ -46,10 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> fetchSlides() async {
-    final response =
-        await http.get(Uri.parse("https://tk1-pbp.herokuapp.com/api/slides"));
-        // await http.get(Uri.parse("http://10.0.2.2:8000/api/slides"));
-        // await http.get(Uri.parse("http://localhost:8000/api/slides"));
+    final response = await http.get(Uri.parse("http://localhost:8000/api/slides"));
+    // get(Uri.parse("http://localhost:8000/api/slides"));
 
     if (mounted) {
       if (response.statusCode == 200) {
