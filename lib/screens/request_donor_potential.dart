@@ -93,14 +93,8 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
           .get("http://localhost:8000/dashboard-donor/api/donor")
           .then((item) {
         List<dynamic> parsedList = item;
-        Map<dynamic, dynamic> chosenFound = parsedList
-            .firstWhere((item) => item['chosen'] == true, orElse: () => {});
         setState(() {
-          if (chosenFound.isEmpty) {
-            donors = item;
-          } else {
-            donors = [chosenFound];
-          }
+          donors = item;
         });
       });
     });
@@ -111,10 +105,10 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
     Iterable<DonorCard> donorComponents = donors.map((item) {
       Map<String, dynamic> donorData = jsonDecode(item['donor_data'])[0];
       return DonorCard(
-          title: donorData['fields']['nama'],
+          title: donorData['nama'],
           subtitle: "Golongan Darah: " +
-              donorData['fields']['golongan_darah'] +
-              donorData['fields']['rhesus'],
+              donorData['golongan_darah'] +
+              donorData['rhesus'],
           onAccept: () {
             final request = Provider.of<CookieRequest>(context, listen: false);
             request.post("http://localhost:8000/dashboard-donor/api/donor",
@@ -164,49 +158,13 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
                   title: "Request Details",
                   subtitle: "Click one of the requests to accept it."),
               ...donors.map((item) {
-                Map<String, dynamic> donorData =
-                    jsonDecode(item['donor_data'])[0];
-                if (!item['chosen']) {
-                  return DonorCard(
-                    title: donorData['fields']['nama'],
-                    subtitle: "Golongan Darah: " +
-                        donorData['fields']['golongan_darah'] +
-                        donorData['fields']['rhesus'],
-                    onAccept: () {
-                      final request =
-                          Provider.of<CookieRequest>(context, listen: false);
-                      request.post(
-                          "http://localhost:8000/dashboard-donor/api/donor",
-                          {"id": item["pk"].toString()}).then((item) {
-                        if (item["status"] == "success") {
-                          request
-                              .get(
-                                  "http://localhost:8000/dashboard-donor/api/donor")
-                              .then((item) {
-                            List<dynamic> parsedList = item;
-                            Map<dynamic, dynamic> chosenFound = parsedList
-                                .firstWhere((item) => item['chosen'] == true,
-                                    orElse: () => {});
-                            setState(() {
-                              if (chosenFound.isEmpty) {
-                                donors = item;
-                              } else {
-                                donors = [chosenFound];
-                              }
-                            });
-                          });
-                        }
-                      });
-                    },
-                  );
-                }
-                return MenuItem(
-                    title: donorData['fields']['nama'],
-                    subtitle: "Golongan Darah: " +
-                        donorData['fields']['golongan_darah'] +
-                        donorData['fields']['rhesus'] +
-                        "\nAccepted as Donor",
-                    onClick: () {});
+                return DonorCard(
+                  title: item['nama'],
+                  subtitle: "Golongan Darah: " +
+                      item['golongan_darah'] +
+                      item['rhesus'],
+                  onAccept: () {},
+                );
               })
             ],
           ),
