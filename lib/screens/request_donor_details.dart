@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
 import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/components/page_header.dart';
-import 'package:tk2_pbp/screens/notifications.dart';
+import 'package:tk2_pbp/screens/donor_notifications.dart';
 
 class RequestDonorDetails extends StatefulWidget {
   const RequestDonorDetails({Key? key}) : super(key: key);

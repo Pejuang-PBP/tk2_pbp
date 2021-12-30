@@ -9,7 +9,7 @@ import 'package:tk2_pbp/components/page_header.dart';
 
 import 'package:tk2_pbp/screens/request_donor_details.dart';
 import 'package:tk2_pbp/screens/request_donor_potential.dart';
-import 'package:tk2_pbp/screens/notifications.dart';
+import 'package:tk2_pbp/screens/donor_notifications.dart';
 import 'package:tk2_pbp/screens/request_donor_report.dart';
 import 'package:tk2_pbp/screens/form_donor_screen.dart';
 

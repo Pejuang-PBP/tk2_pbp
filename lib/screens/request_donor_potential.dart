@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'package:tk2_pbp/screens/notifications.dart';
+import 'package:tk2_pbp/screens/donor_notifications.dart';
 
 import 'package:tk2_pbp/styles/styles.dart';
 import 'package:tk2_pbp/components/menu_items.dart';
