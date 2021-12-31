@@ -24,7 +24,7 @@ class _NotificationState extends State<Notifications> {
         request = Provider.of<CookieRequest>(context, listen: false);
         request
             .get(
-                "https://tk1-pbp.herokuapp.com/dashboard-pencari/api/notifications")
+                "https://tk1-pbp.herokuapp.com/dashboard-donor/api/notifications")
             .then((res) {
           setState(() {
             notifications = res;

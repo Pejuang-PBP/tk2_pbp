@@ -1,25 +1,21 @@
-// ignore_for_file: unused_local_variable, avoid_print, unused_import
+// ignore_for_file: unused_local_variable, avoid_print
 
-import 'dart:convert';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
-
-import 'package:tk2_pbp/screens/notifications.dart';
-import 'package:tk2_pbp/screens/request_pencari_donor_report_details.dart';
-import 'package:tk2_pbp/screens/request_pencari_donor_report_form.dart';
-
-import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
+import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/components/page_header.dart';
+import 'package:tk2_pbp/screens/donor_notifications.dart';
 
-class RequestDonorReport extends StatefulWidget {
-  const RequestDonorReport({Key? key}) : super(key: key);
+class RequestDonorDetails extends StatefulWidget {
+  const RequestDonorDetails({Key? key}) : super(key: key);
   @override
-  _RequestDonorReportState createState() => _RequestDonorReportState();
+  _RequestDonorDetailsState createState() => _RequestDonorDetailsState();
 }
 
-class _RequestDonorReportState extends State<RequestDonorReport> {
-  List<dynamic> notifications = [];
+class _RequestDonorDetailsState extends State<RequestDonorDetails> {
+  List<dynamic> requestDonor = [];
 
   @override
   void initState() {
@@ -27,10 +23,10 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
       request
-          .get("https://tk1-pbp.herokuapp.com/dashboard-pencari/api/report")
+          .get("https://tk1-pbp.herokuapp.com/dashboard-donor/api/request")
           .then((item) {
         setState(() {
-          notifications = item;
+          requestDonor = item;
         });
       });
     });
@@ -45,13 +41,13 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
           backgroundColor: const Color.fromRGBO(0, 41, 84, 1),
           actions: <Widget>[
             IconButton(
-              icon: const Icon(Icons.add),
-              tooltip: 'Create Support Ticket',
+              icon: const Icon(Icons.add_alert),
+              tooltip: 'Notification',
               onPressed: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const RequestDonorReportForm()));
+                        builder: (context) => const Notifications()));
               },
             ),
           ],
@@ -59,7 +55,7 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
         body: Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
-          child: ListView(
+          child: Column(
             // Column is also a layout widget. It takes a list of children and
             // arranges them vertically. By default, it sizes itself to fit its
             // children horizontally, and tries to be as tall as its parent.
@@ -74,31 +70,35 @@ class _RequestDonorReportState extends State<RequestDonorReport> {
             // center the children vertically; the main axis here is the vertical
             // axis because Columns are vertical (the cross axis would be
             // horizontal).
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               const PageHeader(
-                  title: "Support Center",
-                  subtitle:
-                      "If you have any problems, create a support ticket by pressing the button on the top right."),
-              if (notifications.isEmpty)
-                MenuItem(
-                    title: "You do not have any ongoing reports",
-                    subtitle:
-                        "Please create a report if you are having any issues.",
-                    onClick: () {})
-              else
-                ...notifications.map((item) {
-                  return MenuItem(
-                    title: item['title'],
-                    subtitle: "Replies: " +
-                        jsonDecode(item['replies']).length.toString(),
-                    onClick: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return RequestDonorReportDetails(item: item);
-                      }));
-                    },
-                  );
-                })
+                  title: "Request Details",
+                  subtitle: "The following is information about your request."),
+              requestDonor.isNotEmpty
+                  ? Column(
+                      children: [
+                        MenuItem(
+                            onClick: () {},
+                            title: "Name",
+                            subtitle: requestDonor[0]["fields"]["nama"]),
+                        MenuItem(
+                            onClick: () {},
+                            title: "Nomor Induk Kependudukan",
+                            subtitle: requestDonor[0]["fields"]["nomor_induk"]),
+                        MenuItem(
+                            onClick: () {},
+                            title: "Nomor Telepon",
+                            subtitle: requestDonor[0]["fields"]["nomor_hp"]),
+                        MenuItem(
+                            onClick: () {},
+                            title: "Golongan Darah",
+                            subtitle: requestDonor[0]["fields"]
+                                    ["golongan_darah"] +
+                                requestDonor[0]["fields"]["rhesus"]),
+                      ],
+                    )
+                  : const Text("NO")
             ],
           ),
         ));

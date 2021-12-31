@@ -18,7 +18,8 @@ class RequestDonorReportDetails extends StatefulWidget {
         );
 
   @override
-  _RequestDonorReportDetailsState createState() => _RequestDonorReportDetailsState();
+  _RequestDonorReportDetailsState createState() =>
+      _RequestDonorReportDetailsState();
 }
 
 class _RequestDonorReportDetailsState extends State<RequestDonorReportDetails> {
@@ -29,7 +30,9 @@ class _RequestDonorReportDetailsState extends State<RequestDonorReportDetails> {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
-      request.get("http://localhost:8000/dashboard-pencari/api/report").then((item) {
+      request
+          .get("https://tk1-pbp.herokuapp.com/dashboard-pencari/api/report")
+          .then((item) {
         setState(() {
           notifications = item;
         });
@@ -69,10 +72,18 @@ class _RequestDonorReportDetailsState extends State<RequestDonorReportDetails> {
                 title: widget.item['title'],
                 subtitle: "Replies to this ticket are given below.",
               ),
-              MenuItem(title: "From: You", subtitle: "Message: " + widget.item['message'], onClick: () {}),
+              MenuItem(
+                  title: "From: You",
+                  subtitle: "Message: " + widget.item['message'],
+                  onClick: () {}),
               if (widget.item['replies'] != null)
                 ...jsonDecode(widget.item['replies']).map((item) {
-                  return MenuItem(title: "From: Admin", subtitle: item['fields']['message'] + "\n\nSent at: " + item['fields']['timestamp'], onClick: () {});
+                  return MenuItem(
+                      title: "From: Admin",
+                      subtitle: item['fields']['message'] +
+                          "\n\nSent at: " +
+                          item['fields']['timestamp'],
+                      onClick: () {});
                 })
             ],
           ),

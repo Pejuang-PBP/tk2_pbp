@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tk2_pbp/styles/styles.dart';
 
 class PageHeader extends StatelessWidget {
-  const PageHeader({Key? key, required this.title, required this.subtitle, this.child}) : super(key: key);
+  const PageHeader(
+      {Key? key, required this.title, required this.subtitle, this.child})
+      : super(key: key);
   final String title;
   final String subtitle;
   final Widget? child;
@@ -16,14 +18,17 @@ class PageHeader extends StatelessWidget {
           Padding(
               child: Column(children: [
                 ListTile(
-                    title: Container(padding: const EdgeInsets.fromLTRB(0, 4, 0, 4), child: Text(title, style: TextStyles.titleStyle)),
+                    title: Container(
+                        padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+                        child: Text(title, style: TextStyles.titleStyle)),
                     subtitle: Text(
                       subtitle,
                       style: TextStyles.subtitleStyle,
                     )),
                 child ?? Container()
               ]),
-              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0))
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0))
         ]));
   }
 }

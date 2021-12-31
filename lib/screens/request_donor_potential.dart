@@ -5,10 +5,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'package:tk2_pbp/screens/notifications.dart';
+import 'package:tk2_pbp/screens/donor_notifications.dart';
 
 import 'package:tk2_pbp/styles/styles.dart';
-import 'package:tk2_pbp/components/menu_items.dart';
 import 'package:tk2_pbp/helpers/authenticated_request.dart';
 import 'package:tk2_pbp/components/page_header.dart';
 
@@ -90,17 +89,11 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
       request
-          .get("https://tk1-pbp.herokuapp.com/dashboard-pencari/api/donor")
+          .get("https://tk1-pbp.herokuapp.com/dashboard-donor/api/donor")
           .then((item) {
         List<dynamic> parsedList = item;
-        Map<dynamic, dynamic> chosenFound = parsedList
-            .firstWhere((item) => item['chosen'] == true, orElse: () => {});
         setState(() {
-          if (chosenFound.isEmpty) {
-            donors = item;
-          } else {
-            donors = [chosenFound];
-          }
+          donors = item;
         });
       });
     });
@@ -111,14 +104,14 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
     Iterable<DonorCard> donorComponents = donors.map((item) {
       Map<String, dynamic> donorData = jsonDecode(item['donor_data'])[0];
       return DonorCard(
-          title: donorData['fields']['nama'],
+          title: donorData['nama'],
           subtitle: "Golongan Darah: " +
-              donorData['fields']['golongan_darah'] +
-              donorData['fields']['rhesus'],
+              donorData['golongan_darah'] +
+              donorData['rhesus'],
           onAccept: () {
             final request = Provider.of<CookieRequest>(context, listen: false);
             request.post(
-                "https://tk1-pbp.herokuapp.com/dashboard-pencari/api/donor",
+                "https://tk1-pbp.herokuapp.com/dashboard-donor/api/donor",
                 {"id": item["pk"].toString()});
           });
     });
@@ -165,49 +158,13 @@ class _RequestDonorPotentialState extends State<RequestDonorPotential> {
                   title: "Request Details",
                   subtitle: "Click one of the requests to accept it."),
               ...donors.map((item) {
-                Map<String, dynamic> donorData =
-                    jsonDecode(item['donor_data'])[0];
-                if (!item['chosen']) {
-                  return DonorCard(
-                    title: donorData['fields']['nama'],
-                    subtitle: "Golongan Darah: " +
-                        donorData['fields']['golongan_darah'] +
-                        donorData['fields']['rhesus'],
-                    onAccept: () {
-                      final request =
-                          Provider.of<CookieRequest>(context, listen: false);
-                      request.post(
-                          "https://tk1-pbp.herokuapp.com/dashboard-pencari/api/donor",
-                          {"id": item["pk"].toString()}).then((item) {
-                        if (item["status"] == "success") {
-                          request
-                              .get(
-                                  "https://tk1-pbp.herokuapp.com/dashboard-pencari/api/donor")
-                              .then((item) {
-                            List<dynamic> parsedList = item;
-                            Map<dynamic, dynamic> chosenFound = parsedList
-                                .firstWhere((item) => item['chosen'] == true,
-                                    orElse: () => {});
-                            setState(() {
-                              if (chosenFound.isEmpty) {
-                                donors = item;
-                              } else {
-                                donors = [chosenFound];
-                              }
-                            });
-                          });
-                        }
-                      });
-                    },
-                  );
-                }
-                return MenuItem(
-                    title: donorData['fields']['nama'],
-                    subtitle: "Golongan Darah: " +
-                        donorData['fields']['golongan_darah'] +
-                        donorData['fields']['rhesus'] +
-                        "\nAccepted as Donor",
-                    onClick: () {});
+                return DonorCard(
+                  title: item['nama'],
+                  subtitle: "Golongan Darah: " +
+                      item['golongan_darah'] +
+                      item['rhesus'],
+                  onAccept: () {},
+                );
               })
             ],
           ),

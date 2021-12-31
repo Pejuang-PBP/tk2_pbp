@@ -165,7 +165,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               suffixIcon: IconButton(
                                 color: const Color.fromRGBO(200, 200, 200, 1),
                                 splashRadius: 1,
-                                icon: Icon(isPasswordVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                                icon: Icon(isPasswordVisible
+                                    ? Icons.visibility_outlined
+                                    : Icons.visibility_off_outlined),
                                 onPressed: togglePasswordView,
                               ),
                               border: const OutlineInputBorder(
@@ -201,7 +203,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             suffixIcon: IconButton(
                               color: const Color.fromRGBO(200, 200, 200, 1),
                               splashRadius: 1,
-                              icon: Icon(isPasswordVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                              icon: Icon(isPasswordVisible
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined),
                               onPressed: togglePasswordView,
                             ),
                             border: const OutlineInputBorder(
@@ -227,9 +231,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         width: double.infinity,
                         child: TextButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(255, 0, 0, 1)),
-                            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                            overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color.fromRGBO(255, 0, 0, 1)),
+                            foregroundColor:
+                                MaterialStateProperty.all<Color>(Colors.white),
+                            overlayColor:
+                                MaterialStateProperty.resolveWith<Color?>(
+                                    (Set<MaterialState> states) {
                               if (states.contains(MaterialState.pressed)) {
                                 return const Color.fromRGBO(204, 23, 40, 1);
                               }
@@ -239,21 +247,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onPressed: () async {
                             if (_registerFormKey.currentState!.validate()) {
                               final response = await request.post(
-                                  "http://10.0.2.2:8000/auth/signup",
-                                  jsonEncode(<String, String>{
-                                    'email': email,
-                                    'username': username,
-                                    'password1': password1,
-                                    'password2': password2,
-                                  }));
+                                "https://tk1-pbp.herokuapp.com/auth/signup",
+                                jsonEncode(<String, String>{
+                                  'email': email,
+                                  'username': username,
+                                  'password1': password1,
+                                  'password2': password2,
+                                }));
 
                               if (response["status"] == true) {
-                                await request.login("http://10.0.2.2:8000/auth/login", {
-                                  // .login("http://localhost:8000/auth/login", {
+                                await request
+                                  .login("https://tk1-pbp.herokuapp.com/auth/login", {
                                   'username': username,
                                   'password': password1,
                                 });
-                                Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    '/', (Route<dynamic> route) => false);
                               } else {
                                 _showErrors(context, response);
                               }

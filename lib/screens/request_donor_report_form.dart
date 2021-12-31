@@ -106,7 +106,7 @@ class _RequestDonorReportFormState extends State<RequestDonorReportForm> {
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               final response = await request.post(
-                                  "https://tk1-pbp.herokuapp.com/dashboard-pencari/api/report",
+                                  "https://tk1-pbp.herokuapp.com/dashboard-donor/api/report",
                                   {
                                     "title": title,
                                     "message": message,

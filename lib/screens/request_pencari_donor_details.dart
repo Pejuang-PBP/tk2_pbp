@@ -22,7 +22,9 @@ class _RequestDonorDetailsState extends State<RequestDonorDetails> {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       final request = Provider.of<CookieRequest>(context, listen: false);
-      request.get("http://localhost:8000/dashboard-pencari/api/request").then((item) {
+      request
+          .get("https://tk1-pbp.herokuapp.com/dashboard-pencari/api/request")
+          .then((item) {
         setState(() {
           requestDonor = item;
         });
@@ -42,7 +44,10 @@ class _RequestDonorDetailsState extends State<RequestDonorDetails> {
               icon: const Icon(Icons.add_alert),
               tooltip: 'Notification',
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const Notifications()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Notifications()));
               },
             ),
           ],
@@ -67,14 +72,30 @@ class _RequestDonorDetailsState extends State<RequestDonorDetails> {
             // horizontal).
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const PageHeader(title: "Request Details", subtitle: "The following is information about your request."),
+              const PageHeader(
+                  title: "Request Details",
+                  subtitle: "The following is information about your request."),
               requestDonor.isNotEmpty
                   ? Column(
                       children: [
-                        MenuItem(onClick: () {}, title: "Name", subtitle: requestDonor[0]["fields"]["nama"]),
-                        MenuItem(onClick: () {}, title: "Nomor Induk Kependudukan", subtitle: requestDonor[0]["fields"]["nomor_induk"]),
-                        MenuItem(onClick: () {}, title: "Nomor Telepon", subtitle: requestDonor[0]["fields"]["nomor_hp"]),
-                        MenuItem(onClick: () {}, title: "Golongan Darah", subtitle: requestDonor[0]["fields"]["golongan_darah"] + requestDonor[0]["fields"]["rhesus"]),
+                        MenuItem(
+                            onClick: () {},
+                            title: "Name",
+                            subtitle: requestDonor[0]["fields"]["nama"]),
+                        MenuItem(
+                            onClick: () {},
+                            title: "Nomor Induk Kependudukan",
+                            subtitle: requestDonor[0]["fields"]["nomor_induk"]),
+                        MenuItem(
+                            onClick: () {},
+                            title: "Nomor Telepon",
+                            subtitle: requestDonor[0]["fields"]["nomor_hp"]),
+                        MenuItem(
+                            onClick: () {},
+                            title: "Golongan Darah",
+                            subtitle: requestDonor[0]["fields"]
+                                    ["golongan_darah"] +
+                                requestDonor[0]["fields"]["rhesus"]),
                       ],
                     )
                   : const Text("NO")

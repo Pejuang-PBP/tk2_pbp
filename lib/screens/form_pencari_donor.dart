@@ -47,11 +47,16 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
   ];
 
   Future selectDate(BuildContext context) async {
-    DateTime? picked = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1337), lastDate: DateTime.now());
+    DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1337),
+        lastDate: DateTime.now());
     if (picked != null)
       setState(() {
         tanggal_lahir = picked;
-        var date = "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
+        var date =
+            "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
         dateController.text = date;
       });
   }
@@ -75,7 +80,8 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                   decoration: InputDecoration(
                     labelText: "Nama Lengkap",
                     contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1.0)),
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -94,10 +100,14 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                   decoration: InputDecoration(
                     labelText: "NIK",
                     contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1.0)),
                   ),
                   validator: (value) {
-                    if (value!.isEmpty || value.length != 16 || !RegExp(r'^[0-9]+$').hasMatch(value)) return "NIK harus terdiri dari 16 angka";
+                    if (value!.isEmpty ||
+                        value.length != 16 ||
+                        !RegExp(r'^[0-9]+$').hasMatch(value))
+                      return "NIK harus terdiri dari 16 angka";
                     return null;
                   },
                 ),
@@ -111,7 +121,8 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                   decoration: InputDecoration(
                     labelText: "Nomor HP",
                     contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1.0)),
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -146,7 +157,8 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                   decoration: InputDecoration(
                     labelText: "Jenis Kelamin",
                     contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1.0)),
                   ),
                 ),
               ),
@@ -159,7 +171,8 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                   decoration: InputDecoration(
                     labelText: "Tempat Lahir",
                     contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1.0)),
                   ),
                   validator: (value) {
                     if (value!.isEmpty) return "Wajib diisi";
@@ -176,7 +189,8 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                   decoration: InputDecoration(
                     labelText: "Tanggal Lahir",
                     contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1.0)),
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -195,7 +209,8 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                   maxLines: 2,
                   decoration: InputDecoration(
                     labelText: "Alamat",
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1.0)),
                   ),
                   validator: (value) {
                     if (value!.isEmpty) return "Wajib diisi";
@@ -222,7 +237,8 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                   decoration: InputDecoration(
                     labelText: "Golongan Darah",
                     contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1.0)),
                   ),
                 ),
               ),
@@ -245,7 +261,8 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                   decoration: InputDecoration(
                     labelText: "Rhesus",
                     contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1.0)),
                   ),
                 ),
               ),
@@ -258,7 +275,8 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                   decoration: InputDecoration(
                     labelText: "Nama Rumah Sakit Tempat anda dirawat",
                     contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1.0)),
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -287,7 +305,8 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                   decoration: InputDecoration(
                     labelText: "Urgency",
                     contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(1.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1.0)),
                   ),
                 ),
               ),
@@ -299,7 +318,7 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         final response = await request.post(
-                            "http://localhost:8000/form-pencari-donor/mobile",
+                            "https://tk1-pbp.herokuapp.com/form-pencari-donor/mobile",
                             jsonEncode(<String, String>{
                               "nama": _nama!,
                               "nomor_induk": _nik!,
@@ -316,12 +335,14 @@ class _FormPencariDonorState extends State<FormPencariDonor> {
                         if (response["status"] == "ok") {
                           AlertDialog alert = AlertDialog(
                             title: Text('Sukses'),
-                            content: Text('Request Anda telah berhasil dikirim.'),
+                            content:
+                                Text('Request Anda telah berhasil dikirim.'),
                             actions: <Widget>[
                               TextButton(
                                 // onPressed: () => Navigator.popAndPushNamed(context, "/"),
                                 onPressed: () {
-                                  Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                      '/', (Route<dynamic> route) => false);
                                 },
                                 child: Text('OK'),
                               ),
