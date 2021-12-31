@@ -24,7 +24,7 @@ class lokasiUtdState extends State<lokasiUtd> {
   }
 
   fetchData() async {
-    const url = 'http://127.0.0.1:8000/lokasi-donor/json';
+    const url = 'https://tk1-pbp.herokuapp.com/lokasi-donor/json';
 
     final response = await http.get(Uri.parse(url));
     //print(response.body);
